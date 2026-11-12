@@ -36,6 +36,12 @@ data class Fuente(
     val headers: Map<String, String> = emptyMap(),
     /** Para tipo web: fragmento de URL del iframe a extraer del HTML (ej. "mdstrm.com/live-stream/"). */
     val extraerIframe: String? = null,
+    /**
+     * Para hls con token (ej. Telefe): URL que devuelve un JSON. Cada campo del JSON
+     * reemplaza su marcador {campo} en `url` antes de reproducir.
+     * Ej.: url ".../ID.m3u8?access_token={access_token}"
+     */
+    val tokenUrl: String? = null,
     val prioridad: Int = 1,
     val notas: String? = null,
 )

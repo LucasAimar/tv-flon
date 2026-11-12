@@ -1,87 +1,175 @@
 package ar.flon.tv.ui.reproductores
 
 import android.annotation.SuppressLint
+import android.graphics.Bitmap
 import android.graphics.Color
 import android.os.Handler
 import android.os.Looper
+import android.view.View
+import android.view.ViewGroup
 import android.webkit.JavascriptInterface
 import android.webkit.WebChromeClient
 import android.webkit.WebView
+import android.webkit.WebViewClient
+import android.widget.FrameLayout
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
+import androidx.tv.material3.Text
 import ar.flon.tv.data.Fuente
+import kotlinx.coroutines.delay
 
 /**
- * Reproduce el vivo actual de un canal de YouTube con el reproductor embebido oficial
- * (IFrame API, videoId "live_stream" + channel). No hace falta conocer el ID del video:
- * siempre apunta a lo que el canal esté transmitiendo.
+ * Reproduce el vivo actual de un canal de YouTube abriendo directamente el reproductor
+ * embebido oficial (www.youtube.com/embed/live_stream?channel=...).
  *
- * Si YouTube responde con error (canal sin vivo, embed bloqueado) o no arranca en 25 s,
- * se llama a onError y se prueba la fuente siguiente.
+ * Cambios respecto de la v0.1 (se escuchaba pero no se veía):
+ * - Se carga la URL del embed directo, sin una página propia con un iframe adentro.
+ * - WebView en capa de hardware, para que pueda dibujar el video.
+ * - Si el reproductor pide pantalla completa (onShowCustomView), se muestra esa vista;
+ *   antes se ignoraba y solo quedaba el audio.
+ * - Un script revisa el estado: error de YouTube -> fuente siguiente; además informa
+ *   la resolución del video para diagnosticar (cartel abajo a la derecha).
  */
 @SuppressLint("SetJavaScriptEnabled")
 @Composable
 fun ReproductorYouTube(fuente: Fuente, onError: () -> Unit) {
     val onErrorActual = rememberUpdatedState(onError)
-    val canalId = fuente.canalId.orEmpty()
+    var diagnostico by remember { mutableStateOf("Cargando YouTube…") }
+    var mostrarDiagnostico by remember { mutableStateOf(true) }
+    val url = "https://www.youtube.com/embed/live_stream?channel=${fuente.canalId}" +
+        "&autoplay=1&mute=0&controls=0&rel=0&playsinline=1&iv_load_policy=3&enablejsapi=1"
 
-    AndroidView(
-        modifier = Modifier.fillMaxSize(),
-        factory = { ctx ->
-            WebView(ctx).apply {
-                setBackgroundColor(Color.BLACK)
-                keepScreenOn = true
-                settings.javaScriptEnabled = true
-                settings.domStorageEnabled = true
-                settings.mediaPlaybackRequiresUserGesture = false
-                webChromeClient = WebChromeClient()
-                addJavascriptInterface(object {
-                    @JavascriptInterface
-                    fun error(codigo: Int) {
-                        Handler(Looper.getMainLooper()).post { onErrorActual.value() }
+    LaunchedEffect(Unit) { delay(15_000); mostrarDiagnostico = false }
+
+    Box(Modifier.fillMaxSize()) {
+        AndroidView(
+            modifier = Modifier.fillMaxSize(),
+            factory = { ctx ->
+                val contenedor = FrameLayout(ctx).apply { setBackgroundColor(Color.BLACK) }
+                val main = Handler(Looper.getMainLooper())
+                val web = WebView(ctx).apply {
+                    setBackgroundColor(Color.BLACK)
+                    setLayerType(View.LAYER_TYPE_HARDWARE, null)
+                    keepScreenOn = true
+                    settings.javaScriptEnabled = true
+                    settings.domStorageEnabled = true
+                    settings.mediaPlaybackRequiresUserGesture = false
+                    settings.loadWithOverviewMode = true
+                    settings.useWideViewPort = true
+
+                    addJavascriptInterface(object {
+                        @JavascriptInterface
+                        fun error(motivo: String) = main.post {
+                            diagnostico = "YouTube: $motivo"
+                            onErrorActual.value()
+                        }
+
+                        @JavascriptInterface
+                        fun estado(texto: String) = main.post { diagnostico = texto }
+                    }, "Android")
+
+                    webChromeClient = object : WebChromeClient() {
+                        private var vistaCompleta: View? = null
+
+                        override fun onShowCustomView(view: View, callback: CustomViewCallback) {
+                            vistaCompleta = view
+                            contenedor.addView(
+                                view,
+                                FrameLayout.LayoutParams(
+                                    ViewGroup.LayoutParams.MATCH_PARENT,
+                                    ViewGroup.LayoutParams.MATCH_PARENT,
+                                ),
+                            )
+                        }
+
+                        override fun onHideCustomView() {
+                            vistaCompleta?.let { contenedor.removeView(it) }
+                            vistaCompleta = null
+                        }
+
+                        // Evita el ícono gris de "play" que algunos WebView ponen sobre el video.
+                        override fun getDefaultVideoPoster(): Bitmap =
+                            Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888)
                     }
-                }, "Android")
 
-                // El origen https es necesario: YouTube rechaza embeds sin un referer/origen válido.
-                loadDataWithBaseURL(ORIGEN, html(canalId), "text/html", "utf-8", null)
-                requestFocus()
-            }
-        },
-        onRelease = { it.destroy() },
-    )
+                    webViewClient = object : WebViewClient() {
+                        override fun onPageFinished(view: WebView, url: String) {
+                            view.evaluateJavascript(JS_VIGILAR, null)
+                        }
+                    }
+
+                    // YouTube exige un Referer para los embeds (si falta: error 152/153).
+                    loadUrl(url, mapOf("Referer" to REFERER))
+                }
+                contenedor.addView(
+                    web,
+                    FrameLayout.LayoutParams(
+                        ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.MATCH_PARENT,
+                    ),
+                )
+                web.requestFocus()
+                contenedor
+            },
+            onRelease = { contenedor ->
+                (contenedor as ViewGroup).let { g ->
+                    (0 until g.childCount).map { g.getChildAt(it) }
+                        .filterIsInstance<WebView>().forEach { it.destroy() }
+                }
+            },
+        )
+
+        if (mostrarDiagnostico) {
+            Text(
+                diagnostico,
+                modifier = Modifier
+                    .align(Alignment.BottomEnd)
+                    .padding(24.dp)
+                    .background(androidx.compose.ui.graphics.Color(0xAA000000))
+                    .padding(horizontal = 12.dp, vertical = 6.dp),
+                color = androidx.compose.ui.graphics.Color.LightGray,
+            )
+        }
+    }
 }
 
-private const val ORIGEN = "https://ar.flon.tv"
+private const val REFERER = "https://ar.flon.tv/"
 
-private fun html(canalId: String) = """
-<!DOCTYPE html>
-<html><head>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<style>html,body{margin:0;height:100%;background:#000;overflow:hidden}#p{width:100%;height:100%}</style>
-</head><body>
-<div id="p"></div>
-<script>
-  var arranco = false;
-  setTimeout(function(){ if(!arranco) Android.error(-1); }, 25000);
-  var tag = document.createElement('script');
-  tag.src = "https://www.youtube.com/iframe_api";
-  document.head.appendChild(tag);
-  function onYouTubeIframeAPIReady() {
-    new YT.Player('p', {
-      width: '100%', height: '100%',
-      videoId: 'live_stream',
-      playerVars: { channel: '$canalId', autoplay: 1, controls: 0, rel: 0,
-                    playsinline: 1, iv_load_policy: 3, origin: '$ORIGEN' },
-      events: {
-        onReady: function(e){ e.target.playVideo(); },
-        onStateChange: function(e){ if (e.data === YT.PlayerState.PLAYING) arranco = true; },
-        onError: function(e){ Android.error(e.data); }
-      }
-    });
-  }
-</script>
-</body></html>
-""".trimIndent()
+/**
+ * Corre dentro del embed: cada 2 s revisa si hay error de YouTube, si el video avanza
+ * y qué resolución tiene. Si a los 30 s no arrancó, avisa error para pasar a otra fuente.
+ */
+private const val JS_VIGILAR = """
+(function(){
+  if (window.__vigilando) return; window.__vigilando = true;
+  var inicio = Date.now(), arranco = false;
+  var t = setInterval(function(){
+    var err = document.querySelector('.ytp-error, .ytp-error-content-wrap');
+    if (err && err.offsetParent !== null) {
+      clearInterval(t); Android.error((err.innerText || 'error').trim().slice(0,80)); return;
+    }
+    var v = document.querySelector('video');
+    if (v) {
+      if (v.paused) { try { v.play(); } catch(e){} }
+      if (v.currentTime > 0) arranco = true;
+      Android.estado('Video ' + v.videoWidth + 'x' + v.videoHeight +
+                     (arranco ? ' · reproduciendo' : ' · cargando'));
+    }
+    if (!arranco && Date.now() - inicio > 30000) { clearInterval(t); Android.error('no arrancó'); }
+    if (arranco && Date.now() - inicio > 20000) clearInterval(t);
+  }, 2000);
+})();
+"""

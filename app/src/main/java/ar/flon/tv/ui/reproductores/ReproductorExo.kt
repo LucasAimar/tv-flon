@@ -7,6 +7,10 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.setValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -27,6 +31,7 @@ import androidx.tv.material3.Text
 import ar.flon.tv.data.Canal
 import ar.flon.tv.data.Fuente
 import ar.flon.tv.data.Http
+import ar.flon.tv.data.resolverUrl
 
 /**
  * ExoPlayer para fuentes hls (video) y audio (radios: mp3, aac o HLS de audio).
@@ -49,11 +54,17 @@ fun ReproductorExo(fuente: Fuente, soloAudio: Boolean, canal: Canal, onError: ()
         ExoPlayer.Builder(context)
             .setMediaSourceFactory(DefaultMediaSourceFactory(http))
             .build()
-            .apply {
-                setMediaItem(MediaItem.fromUri(fuente.url.orEmpty()))
-                playWhenReady = true
-                prepare()
-            }
+            .apply { playWhenReady = true }
+    }
+
+    // Resuelve la URL (pide el token si hace falta) y arranca. `intentos` sube cuando
+    // un token vence: se pide uno nuevo hasta 2 veces antes de pasar a la fuente siguiente.
+    var intentos by remember { mutableIntStateOf(0) }
+    LaunchedEffect(intentos) {
+        val url = resolverUrl(fuente)
+        if (url == null) { onError(); return@LaunchedEffect }
+        player.setMediaItem(MediaItem.fromUri(url))
+        player.prepare()
     }
 
     DisposableEffect(player) {
@@ -62,6 +73,8 @@ fun ReproductorExo(fuente: Fuente, soloAudio: Boolean, canal: Canal, onError: ()
                 if (error.errorCode == PlaybackException.ERROR_CODE_BEHIND_LIVE_WINDOW) {
                     player.seekToDefaultPosition()
                     player.prepare()
+                } else if (fuente.tokenUrl != null && intentos < 2) {
+                    intentos++
                 } else {
                     onError()
                 }

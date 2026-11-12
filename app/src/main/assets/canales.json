@@ -1,167 +1,554 @@
 {
   "version": 1,
-  "verificado": "2026-10-28",
-  "categorias": ["Aire", "Noticias", "Córdoba", "Deportes", "Otros", "Radios"],
+  "verificado": "2026-11-12",
+  "categorias": [
+    "Aire",
+    "Noticias",
+    "Córdoba",
+    "Deportes",
+    "Otros",
+    "Radios"
+  ],
   "canales": [
     {
-      "id": "telefe", "nombre": "Telefe", "categoria": "Aire",
+      "id": "telefe",
+      "nombre": "Telefe",
+      "categoria": "Aire",
       "fuentes": [
-        { "tipo": "web", "url": "https://www.mitelefe.com/telefe-en-vivo", "extraerIframe": "mdstrm.com/live-stream/", "prioridad": 1, "notas": "Reproductor Mediastream con access_token; sacar el src del iframe y abrirlo solo" },
-        { "tipo": "youtube", "canalId": "UCHc3el42hXKKhjs_1vzWk9A", "prioridad": 2, "notas": "Vivo en YouTube no siempre 24/7" }
+        {
+          "tipo": "hls",
+          "url": "https://mdstrm.com/live-stream-playlist/6a024684fd4ca6a938f3a118.m3u8?access_token={access_token}",
+          "tokenUrl": "https://57j4mtvcjjf7siqnnvkixb5d3i0uvjei.lambda-url.us-east-1.on.aws/?stream_id=6a024684fd4ca6a938f3a118",
+          "headers": {
+            "Referer": "https://www.mitelefe.com/",
+            "Origin": "https://www.mitelefe.com"
+          },
+          "prioridad": 1,
+          "notas": "Token del mismo servicio que usa mitelefe.com/telefe-en-vivo; HLS H.264 sin DRM"
+        },
+        {
+          "tipo": "youtube",
+          "canalId": "UCHc3el42hXKKhjs_1vzWk9A",
+          "prioridad": 2,
+          "notas": "Solo cuando Telefe transmite en vivo por YouTube"
+        }
       ]
     },
     {
-      "id": "eltrece", "nombre": "El Trece", "categoria": "Aire",
+      "id": "eltrece",
+      "nombre": "El Trece",
+      "categoria": "Aire",
       "fuentes": [
-        { "tipo": "hls", "url": "https://livetrx01.vodgc.net/eltrecetv/index.m3u8", "headers": { "Referer": "https://vodgc.net" }, "prioridad": 1 },
-        { "tipo": "youtube", "canalId": "UC0DM_mHV2u6dj8ig51GkQwg", "prioridad": 2, "notas": "Solo vivos ocasionales" }
+        {
+          "tipo": "hls",
+          "url": "https://livetrx01.vodgc.net/eltrecetv/index.m3u8",
+          "headers": {
+            "Referer": "https://vodgc.net"
+          },
+          "prioridad": 1
+        },
+        {
+          "tipo": "youtube",
+          "canalId": "UC0DM_mHV2u6dj8ig51GkQwg",
+          "prioridad": 2,
+          "notas": "Solo vivos ocasionales"
+        }
       ]
     },
     {
-      "id": "america", "nombre": "América TV", "categoria": "Aire",
+      "id": "america",
+      "nombre": "América TV",
+      "categoria": "Aire",
       "fuentes": [
-        { "tipo": "hls", "url": "https://prepublish.f.qaotic.net/a07/americahls-100056/playlist_720p.m3u8", "prioridad": 1 }
+        {
+          "tipo": "hls",
+          "url": "https://prepublish.f.qaotic.net/a07/americahls-100056/playlist_720p.m3u8",
+          "prioridad": 1
+        }
       ]
     },
     {
-      "id": "elnueve", "nombre": "El Nueve", "categoria": "Aire",
+      "id": "elnueve",
+      "nombre": "El Nueve",
+      "categoria": "Aire",
       "fuentes": [
-        { "tipo": "youtube", "canalId": "UCUT4NmGqjrVpKf2JyiS_bbA", "prioridad": 1 }
+        {
+          "tipo": "youtube",
+          "canalId": "UCUT4NmGqjrVpKf2JyiS_bbA",
+          "prioridad": 1
+        }
       ]
     },
     {
-      "id": "canalsiete", "nombre": "TV Pública (Canal Siete)", "categoria": "Aire",
+      "id": "canalsiete",
+      "nombre": "TV Pública (Canal Siete)",
+      "categoria": "Aire",
       "fuentes": [
-        { "tipo": "youtube", "canalId": "UCs231K71Bnu5295_x0MB5Pg", "prioridad": 1 }
+        {
+          "tipo": "youtube",
+          "canalId": "UCs231K71Bnu5295_x0MB5Pg",
+          "prioridad": 1
+        }
       ]
     },
     {
-      "id": "nettv", "nombre": "Net TV", "categoria": "Aire",
+      "id": "nettv",
+      "nombre": "Net TV",
+      "categoria": "Aire",
       "fuentes": [
-        { "tipo": "hls", "url": "https://unlimited1-us.dps.live/nettv/nettv.smil/playlist.m3u8", "prioridad": 1 },
-        { "tipo": "hls", "url": "https://unlimited6-cl.dps.live/nettv/nettv.smil/playlist.m3u8", "prioridad": 2 }
+        {
+          "tipo": "hls",
+          "url": "https://unlimited1-us.dps.live/nettv/nettv.smil/playlist.m3u8",
+          "prioridad": 1
+        },
+        {
+          "tipo": "hls",
+          "url": "https://unlimited6-cl.dps.live/nettv/nettv.smil/playlist.m3u8",
+          "prioridad": 2
+        }
       ]
     },
     {
-      "id": "tn", "nombre": "TN", "categoria": "Noticias",
+      "id": "tn",
+      "nombre": "TN",
+      "categoria": "Noticias",
       "fuentes": [
-        { "tipo": "youtube", "canalId": "UCj6PcyLvpnIRT_2W_mwa9Aw", "prioridad": 1 },
-        { "tipo": "web", "url": "https://tn.com.ar/envivo/24hs/", "prioridad": 2 }
+        {
+          "tipo": "youtube",
+          "canalId": "UCj6PcyLvpnIRT_2W_mwa9Aw",
+          "prioridad": 1
+        },
+        {
+          "tipo": "web",
+          "url": "https://tn.com.ar/envivo/24hs/",
+          "prioridad": 2
+        }
       ]
     },
     {
-      "id": "c5n", "nombre": "C5N", "categoria": "Noticias",
-      "fuentes": [ { "tipo": "youtube", "canalId": "UCFgk2Q2mVO1BklRQhSv6p0w", "prioridad": 1 } ]
-    },
-    {
-      "id": "a24", "nombre": "A24", "categoria": "Noticias",
+      "id": "c5n",
+      "nombre": "C5N",
+      "categoria": "Noticias",
       "fuentes": [
-        { "tipo": "youtube", "canalId": "UCR9120YBAqMfntqgRTKmkjQ", "prioridad": 1 },
-        { "tipo": "hls", "url": "https://g1.proy-hor.transport.edge-access.net/a15/ngrp:a24-100056_all/Playlist.m3u8", "headers": { "Referer": "https://vmf.edge-apps.net/" }, "prioridad": 2 }
+        {
+          "tipo": "youtube",
+          "canalId": "UCFgk2Q2mVO1BklRQhSv6p0w",
+          "prioridad": 1
+        }
       ]
     },
     {
-      "id": "lnmas", "nombre": "LN+", "categoria": "Noticias",
-      "fuentes": [ { "tipo": "youtube", "canalId": "UCba3hpU7EFBSk817y9qZkiA", "prioridad": 1 } ]
-    },
-    {
-      "id": "cronica", "nombre": "Crónica TV", "categoria": "Noticias",
-      "fuentes": [ { "tipo": "youtube", "canalId": "UCT7KFGv6s2a-rh2Jq8ZdM1g", "prioridad": 1 } ]
-    },
-    {
-      "id": "canal26", "nombre": "Canal 26", "categoria": "Noticias",
+      "id": "a24",
+      "nombre": "A24",
+      "categoria": "Noticias",
       "fuentes": [
-        { "tipo": "hls", "url": "https://stream-gtlc.telecentro.net.ar/hls/canal26hls/main.m3u8", "prioridad": 1 },
-        { "tipo": "hls", "url": "https://stream-gtlc.telecentro.net.ar/hls/canal26hls/0/playlist.m3u8", "prioridad": 2 }
+        {
+          "tipo": "youtube",
+          "canalId": "UCR9120YBAqMfntqgRTKmkjQ",
+          "prioridad": 1
+        },
+        {
+          "tipo": "hls",
+          "url": "https://g1.proy-hor.transport.edge-access.net/a15/ngrp:a24-100056_all/Playlist.m3u8",
+          "headers": {
+            "Referer": "https://vmf.edge-apps.net/"
+          },
+          "prioridad": 2
+        }
       ]
     },
     {
-      "id": "canal10cba", "nombre": "Canal 10 Córdoba", "categoria": "Córdoba",
+      "id": "lnmas",
+      "nombre": "LN+",
+      "categoria": "Noticias",
       "fuentes": [
-        { "tipo": "youtube", "canalId": "UCUzonpa3XKurQVycdMY70XQ", "prioridad": 1 },
-        { "tipo": "hls", "url": "https://stream.arcast.net:4443/canal10/ngrp:canal10_all/playlist.m3u8", "prioridad": 2 }
+        {
+          "tipo": "youtube",
+          "canalId": "UCba3hpU7EFBSk817y9qZkiA",
+          "prioridad": 1
+        }
       ]
     },
     {
-      "id": "eldoce", "nombre": "El Doce", "categoria": "Córdoba",
-      "fuentes": [ { "tipo": "youtube", "canalId": "UCiaePeoCqpU8hBHiNrgkzrA", "prioridad": 1 } ]
-    },
-    {
-      "id": "uniteve", "nombre": "Uniteve", "categoria": "Córdoba",
-      "fuentes": [ { "tipo": "hls", "url": "https://vivo.solumedia.com:19360/uniteve/uniteve.m3u8", "prioridad": 1, "notas": "No es 24/7" } ]
-    },
-    {
-      "id": "canal4vd", "nombre": "Canal 4 Villa Dolores", "categoria": "Córdoba",
-      "fuentes": [ { "tipo": "hls", "url": "https://stmvideo3.livecastv.com/canal4vd/canal4vd/playlist.m3u8", "prioridad": 1 } ]
-    },
-    {
-      "id": "canal50", "nombre": "Canal 50 Morteros", "categoria": "Córdoba",
-      "fuentes": [ { "tipo": "hls", "url": "https://online.coopmorteros.coop/canal50/vivo.m3u8", "prioridad": 1 } ]
-    },
-    {
-      "id": "tyc", "nombre": "TyC Sports", "categoria": "Deportes",
+      "id": "cronica",
+      "nombre": "Crónica TV",
+      "categoria": "Noticias",
       "fuentes": [
-        { "tipo": "hls", "url": "https://live-04-11-tyc-app-web.vodgc.net/tyc24/index.m3u8", "prioridad": 1, "notas": "Puede ser la señal web/FAST, no la de cable" },
-        { "tipo": "hls", "url": "https://amg26268-amg26268c14-freelivesports-emea-10267.playouts.now.amagi.tv/ts-us-e2-n2/playlist/amg26268-sportsstudio-tycsports-freelivesportsemea/playlist.m3u8", "prioridad": 2 }
+        {
+          "tipo": "youtube",
+          "canalId": "UCT7KFGv6s2a-rh2Jq8ZdM1g",
+          "prioridad": 1
+        }
       ]
     },
     {
-      "id": "carastv", "nombre": "Caras TV", "categoria": "Otros",
-      "fuentes": [ { "tipo": "hls", "url": "https://unlimited1-us.dps.live/carastv/carastv.smil/playlist.m3u8", "prioridad": 1 } ]
+      "id": "canal26",
+      "nombre": "Canal 26",
+      "categoria": "Noticias",
+      "fuentes": [
+        {
+          "tipo": "hls",
+          "url": "https://stream-gtlc.telecentro.net.ar/hls/canal26hls/main.m3u8",
+          "prioridad": 1
+        },
+        {
+          "tipo": "hls",
+          "url": "https://stream-gtlc.telecentro.net.ar/hls/canal26hls/0/playlist.m3u8",
+          "prioridad": 2
+        }
+      ]
     },
     {
-      "id": "argentinisima", "nombre": "Argentinísima Satelital", "categoria": "Otros",
-      "fuentes": [ { "tipo": "hls", "url": "https://stream1.sersat.com/hls/argentinisima.m3u8", "prioridad": 1 } ]
+      "id": "canal10cba",
+      "nombre": "Canal 10 Córdoba",
+      "categoria": "Córdoba",
+      "fuentes": [
+        {
+          "tipo": "youtube",
+          "canalId": "UCUzonpa3XKurQVycdMY70XQ",
+          "prioridad": 1
+        },
+        {
+          "tipo": "hls",
+          "url": "https://stream.arcast.net:4443/canal10/ngrp:canal10_all/playlist.m3u8",
+          "prioridad": 2
+        }
+      ]
     },
     {
-      "id": "telemax", "nombre": "Telemax", "categoria": "Otros",
-      "fuentes": [ { "tipo": "hls", "url": "https://stream-gtlc.telecentro.net.ar/hls/telemaxhls/main.m3u8", "prioridad": 1 } ]
+      "id": "eldoce",
+      "nombre": "El Doce",
+      "categoria": "Córdoba",
+      "fuentes": [
+        {
+          "tipo": "youtube",
+          "canalId": "UCiaePeoCqpU8hBHiNrgkzrA",
+          "prioridad": 1
+        }
+      ]
     },
-
-    { "id": "cadena3", "nombre": "Cadena 3", "categoria": "Radios",
+    {
+      "id": "uniteve",
+      "nombre": "Uniteve",
+      "categoria": "Córdoba",
       "fuentes": [
-        { "tipo": "audio", "url": "https://liveradio.mediainbox.net/radio3.mp3", "prioridad": 1 },
-        { "tipo": "audio", "url": "https://playerservices.streamtheworld.com/api/livestream-redirect/radio3.mp3", "prioridad": 2 }
-      ] },
-    { "id": "lapopu", "nombre": "La Popu", "categoria": "Radios",
-      "fuentes": [ { "tipo": "audio", "url": "https://liveradio.mediainbox.net/popular.mp3", "prioridad": 1 } ] },
-    { "id": "mitrecba", "nombre": "Radio Mitre Córdoba", "categoria": "Radios",
-      "fuentes": [ { "tipo": "audio", "url": "https://playerservices.streamtheworld.com/api/livestream-redirect/AM810_56AAC.aac", "prioridad": 1 } ] },
-    { "id": "mitre", "nombre": "Radio Mitre", "categoria": "Radios",
+        {
+          "tipo": "hls",
+          "url": "https://vivo.solumedia.com:19360/uniteve/uniteve.m3u8",
+          "prioridad": 1,
+          "notas": "No es 24/7"
+        }
+      ]
+    },
+    {
+      "id": "canal4vd",
+      "nombre": "Canal 4 Villa Dolores",
+      "categoria": "Córdoba",
       "fuentes": [
-        { "tipo": "audio", "url": "https://playerservices.streamtheworld.com/api/livestream-redirect/AM790_56AAC_SC", "prioridad": 1 },
-        { "tipo": "youtube", "canalId": "UCYvINPByAdCcpA0sWrF3I_w", "prioridad": 2 }
-      ] },
-    { "id": "nacionalcba", "nombre": "Radio Nacional Córdoba", "categoria": "Radios",
-      "fuentes": [ { "tipo": "audio", "url": "http://sa.mp3.icecast.magma.edge-access.net:7200/sc_rad7", "prioridad": 1 } ] },
-    { "id": "nacional", "nombre": "Radio Nacional AM 870", "categoria": "Radios",
-      "fuentes": [ { "tipo": "audio", "url": "http://sa.mp3.icecast.magma.edge-access.net:7200/sc_rad1", "prioridad": 1 } ] },
-    { "id": "nacionalrock", "nombre": "Nacional Rock 93.7", "categoria": "Radios",
-      "fuentes": [ { "tipo": "audio", "url": "http://sa.mp3.icecast.magma.edge-access.net:7200/sc_rad39", "prioridad": 1 } ] },
-    { "id": "nacionalfolk", "nombre": "Nacional Folklórica 98.7", "categoria": "Radios",
-      "fuentes": [ { "tipo": "audio", "url": "http://sa.mp3.icecast.magma.edge-access.net:7200/sc_rad38", "prioridad": 1 } ] },
-    { "id": "continental", "nombre": "Continental 590", "categoria": "Radios",
-      "fuentes": [ { "tipo": "audio", "url": "https://frontend.radiohdvivo.com/continental/live", "prioridad": 1 } ] },
-    { "id": "rivadavia", "nombre": "Radio Rivadavia", "categoria": "Radios",
-      "fuentes": [ { "tipo": "audio", "url": "https://playerservices.streamtheworld.com/api/livestream-redirect/RIVADAVIA.mp3", "prioridad": 1 } ] },
-    { "id": "radio10", "nombre": "Radio 10", "categoria": "Radios",
-      "fuentes": [ { "tipo": "audio", "url": "https://radio10.stweb.tv/radio10/live/playlist.m3u8", "prioridad": 1 } ] },
-    { "id": "convos", "nombre": "Radio con Vos", "categoria": "Radios",
-      "fuentes": [ { "tipo": "audio", "url": "https://server1.stweb.tv/rcvos/live/playlist.m3u8", "prioridad": 1 } ] },
-    { "id": "urbana", "nombre": "Urbana Play", "categoria": "Radios",
-      "fuentes": [ { "tipo": "audio", "url": "https://vmf.edge-apps.net/playlist/urbana.m3u8/play.m3u8", "prioridad": 1 } ] },
-    { "id": "la100", "nombre": "La 100", "categoria": "Radios",
+        {
+          "tipo": "hls",
+          "url": "https://stmvideo3.livecastv.com/canal4vd/canal4vd/playlist.m3u8",
+          "prioridad": 1
+        }
+      ]
+    },
+    {
+      "id": "canal50",
+      "nombre": "Canal 50 Morteros",
+      "categoria": "Córdoba",
       "fuentes": [
-        { "tipo": "audio", "url": "https://playerservices.streamtheworld.com/api/livestream-redirect/FM999_56.mp3", "prioridad": 1 },
-        { "tipo": "hls", "url": "https://mdstrm.com/live-stream-playlist/68b74fd1d6512526f1f7c75a.m3u8", "prioridad": 2, "notas": "Versión con video" }
-      ] },
-    { "id": "aspen", "nombre": "Aspen 102.3", "categoria": "Radios",
-      "fuentes": [ { "tipo": "audio", "url": "https://playerservices.streamtheworld.com/api/livestream-redirect/ASPEN.mp3", "prioridad": 1 } ] },
-    { "id": "metro", "nombre": "Metro 95.1", "categoria": "Radios",
-      "fuentes": [ { "tipo": "audio", "url": "https://playerservices.streamtheworld.com/api/livestream-redirect/METRO.mp3", "prioridad": 1 } ] },
-    { "id": "rockandpop", "nombre": "Rock & Pop", "categoria": "Radios",
-      "fuentes": [ { "tipo": "audio", "url": "https://playerservices.streamtheworld.com/api/livestream-redirect/ROCKANDPOP.mp3", "prioridad": 1 } ] },
-    { "id": "cosquinrock", "nombre": "Cosquín Rock 95.5", "categoria": "Radios",
-      "fuentes": [ { "tipo": "audio", "url": "https://playerservices.streamtheworld.com/api/livestream-redirect/cosquinrock.mp3", "prioridad": 1 } ] }
+        {
+          "tipo": "hls",
+          "url": "https://online.coopmorteros.coop/canal50/vivo.m3u8",
+          "prioridad": 1
+        }
+      ]
+    },
+    {
+      "id": "tyc",
+      "nombre": "TyC Sports",
+      "categoria": "Deportes",
+      "fuentes": [
+        {
+          "tipo": "hls",
+          "url": "https://live-04-11-tyc-app-web.vodgc.net/tyc24/index.m3u8",
+          "prioridad": 1,
+          "notas": "Puede ser la señal web/FAST, no la de cable"
+        },
+        {
+          "tipo": "hls",
+          "url": "https://amg26268-amg26268c14-freelivesports-emea-10267.playouts.now.amagi.tv/ts-us-e2-n2/playlist/amg26268-sportsstudio-tycsports-freelivesportsemea/playlist.m3u8",
+          "prioridad": 2
+        }
+      ]
+    },
+    {
+      "id": "carastv",
+      "nombre": "Caras TV",
+      "categoria": "Otros",
+      "fuentes": [
+        {
+          "tipo": "hls",
+          "url": "https://unlimited1-us.dps.live/carastv/carastv.smil/playlist.m3u8",
+          "prioridad": 1
+        }
+      ]
+    },
+    {
+      "id": "argentinisima",
+      "nombre": "Argentinísima Satelital",
+      "categoria": "Otros",
+      "fuentes": [
+        {
+          "tipo": "hls",
+          "url": "https://stream1.sersat.com/hls/argentinisima.m3u8",
+          "prioridad": 1
+        }
+      ]
+    },
+    {
+      "id": "telemax",
+      "nombre": "Telemax",
+      "categoria": "Otros",
+      "fuentes": [
+        {
+          "tipo": "hls",
+          "url": "https://stream-gtlc.telecentro.net.ar/hls/telemaxhls/main.m3u8",
+          "prioridad": 1
+        }
+      ]
+    },
+    {
+      "id": "cadena3",
+      "nombre": "Cadena 3",
+      "categoria": "Radios",
+      "fuentes": [
+        {
+          "tipo": "audio",
+          "url": "https://liveradio.mediainbox.net/radio3.mp3",
+          "prioridad": 1
+        },
+        {
+          "tipo": "audio",
+          "url": "https://playerservices.streamtheworld.com/api/livestream-redirect/radio3.mp3",
+          "prioridad": 2
+        }
+      ]
+    },
+    {
+      "id": "lapopu",
+      "nombre": "La Popu",
+      "categoria": "Radios",
+      "fuentes": [
+        {
+          "tipo": "audio",
+          "url": "https://liveradio.mediainbox.net/popular.mp3",
+          "prioridad": 1
+        }
+      ]
+    },
+    {
+      "id": "mitrecba",
+      "nombre": "Radio Mitre Córdoba",
+      "categoria": "Radios",
+      "fuentes": [
+        {
+          "tipo": "audio",
+          "url": "https://playerservices.streamtheworld.com/api/livestream-redirect/AM810_56AAC.aac",
+          "prioridad": 1
+        }
+      ]
+    },
+    {
+      "id": "mitre",
+      "nombre": "Radio Mitre",
+      "categoria": "Radios",
+      "fuentes": [
+        {
+          "tipo": "audio",
+          "url": "https://playerservices.streamtheworld.com/api/livestream-redirect/AM790_56AAC_SC",
+          "prioridad": 1
+        },
+        {
+          "tipo": "youtube",
+          "canalId": "UCYvINPByAdCcpA0sWrF3I_w",
+          "prioridad": 2
+        }
+      ]
+    },
+    {
+      "id": "nacionalcba",
+      "nombre": "Radio Nacional Córdoba",
+      "categoria": "Radios",
+      "fuentes": [
+        {
+          "tipo": "audio",
+          "url": "http://sa.mp3.icecast.magma.edge-access.net:7200/sc_rad7",
+          "prioridad": 1
+        }
+      ]
+    },
+    {
+      "id": "nacional",
+      "nombre": "Radio Nacional AM 870",
+      "categoria": "Radios",
+      "fuentes": [
+        {
+          "tipo": "audio",
+          "url": "http://sa.mp3.icecast.magma.edge-access.net:7200/sc_rad1",
+          "prioridad": 1
+        }
+      ]
+    },
+    {
+      "id": "nacionalrock",
+      "nombre": "Nacional Rock 93.7",
+      "categoria": "Radios",
+      "fuentes": [
+        {
+          "tipo": "audio",
+          "url": "http://sa.mp3.icecast.magma.edge-access.net:7200/sc_rad39",
+          "prioridad": 1
+        }
+      ]
+    },
+    {
+      "id": "nacionalfolk",
+      "nombre": "Nacional Folklórica 98.7",
+      "categoria": "Radios",
+      "fuentes": [
+        {
+          "tipo": "audio",
+          "url": "http://sa.mp3.icecast.magma.edge-access.net:7200/sc_rad38",
+          "prioridad": 1
+        }
+      ]
+    },
+    {
+      "id": "continental",
+      "nombre": "Continental 590",
+      "categoria": "Radios",
+      "fuentes": [
+        {
+          "tipo": "audio",
+          "url": "https://frontend.radiohdvivo.com/continental/live",
+          "prioridad": 1
+        }
+      ]
+    },
+    {
+      "id": "rivadavia",
+      "nombre": "Radio Rivadavia",
+      "categoria": "Radios",
+      "fuentes": [
+        {
+          "tipo": "audio",
+          "url": "https://playerservices.streamtheworld.com/api/livestream-redirect/RIVADAVIA.mp3",
+          "prioridad": 1
+        }
+      ]
+    },
+    {
+      "id": "radio10",
+      "nombre": "Radio 10",
+      "categoria": "Radios",
+      "fuentes": [
+        {
+          "tipo": "audio",
+          "url": "https://radio10.stweb.tv/radio10/live/playlist.m3u8",
+          "prioridad": 1
+        }
+      ]
+    },
+    {
+      "id": "convos",
+      "nombre": "Radio con Vos",
+      "categoria": "Radios",
+      "fuentes": [
+        {
+          "tipo": "audio",
+          "url": "https://server1.stweb.tv/rcvos/live/playlist.m3u8",
+          "prioridad": 1
+        }
+      ]
+    },
+    {
+      "id": "urbana",
+      "nombre": "Urbana Play",
+      "categoria": "Radios",
+      "fuentes": [
+        {
+          "tipo": "audio",
+          "url": "https://vmf.edge-apps.net/playlist/urbana.m3u8/play.m3u8",
+          "prioridad": 1
+        }
+      ]
+    },
+    {
+      "id": "la100",
+      "nombre": "La 100",
+      "categoria": "Radios",
+      "fuentes": [
+        {
+          "tipo": "audio",
+          "url": "https://playerservices.streamtheworld.com/api/livestream-redirect/FM999_56.mp3",
+          "prioridad": 1
+        },
+        {
+          "tipo": "hls",
+          "url": "https://mdstrm.com/live-stream-playlist/68b74fd1d6512526f1f7c75a.m3u8",
+          "prioridad": 2,
+          "notas": "Versión con video"
+        }
+      ]
+    },
+    {
+      "id": "aspen",
+      "nombre": "Aspen 102.3",
+      "categoria": "Radios",
+      "fuentes": [
+        {
+          "tipo": "audio",
+          "url": "https://playerservices.streamtheworld.com/api/livestream-redirect/ASPEN.mp3",
+          "prioridad": 1
+        }
+      ]
+    },
+    {
+      "id": "metro",
+      "nombre": "Metro 95.1",
+      "categoria": "Radios",
+      "fuentes": [
+        {
+          "tipo": "audio",
+          "url": "https://playerservices.streamtheworld.com/api/livestream-redirect/METRO.mp3",
+          "prioridad": 1
+        }
+      ]
+    },
+    {
+      "id": "rockandpop",
+      "nombre": "Rock & Pop",
+      "categoria": "Radios",
+      "fuentes": [
+        {
+          "tipo": "audio",
+          "url": "https://playerservices.streamtheworld.com/api/livestream-redirect/ROCKANDPOP.mp3",
+          "prioridad": 1
+        }
+      ]
+    },
+    {
+      "id": "cosquinrock",
+      "nombre": "Cosquín Rock 95.5",
+      "categoria": "Radios",
+      "fuentes": [
+        {
+          "tipo": "audio",
+          "url": "https://playerservices.streamtheworld.com/api/livestream-redirect/cosquinrock.mp3",
+          "prioridad": 1
+        }
+      ]
+    }
   ]
 }
