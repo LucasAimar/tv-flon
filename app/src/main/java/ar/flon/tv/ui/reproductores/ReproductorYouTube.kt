@@ -29,6 +29,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.tv.material3.Text
 import ar.flon.tv.data.Fuente
+import androidx.webkit.WebViewCompat
+import androidx.webkit.WebViewFeature
 import kotlinx.coroutines.delay
 
 /**
@@ -45,7 +47,7 @@ import kotlinx.coroutines.delay
  */
 @SuppressLint("SetJavaScriptEnabled")
 @Composable
-fun ReproductorYouTube(fuente: Fuente, onError: () -> Unit) {
+fun ReproductorYouTube(fuente: Fuente, onError: (String) -> Unit) {
     val onErrorActual = rememberUpdatedState(onError)
     var diagnostico by remember { mutableStateOf("Cargando YouTube…") }
     var mostrarDiagnostico by remember { mutableStateOf(true) }
@@ -60,6 +62,8 @@ fun ReproductorYouTube(fuente: Fuente, onError: () -> Unit) {
             factory = { ctx ->
                 val contenedor = FrameLayout(ctx).apply { setBackgroundColor(Color.BLACK) }
                 val main = Handler(Looper.getMainLooper())
+                var h264PorOnPageStarted = false
+                var avisado = false // un solo aviso de error por fuente
                 val web = WebView(ctx).apply {
                     setBackgroundColor(Color.BLACK)
                     setLayerType(View.LAYER_TYPE_HARDWARE, null)
@@ -73,8 +77,10 @@ fun ReproductorYouTube(fuente: Fuente, onError: () -> Unit) {
                     addJavascriptInterface(object {
                         @JavascriptInterface
                         fun error(motivo: String) = main.post {
+                            if (avisado) return@post
+                            avisado = true
                             diagnostico = "YouTube: $motivo"
-                            onErrorActual.value()
+                            onErrorActual.value(motivo)
                         }
 
                         @JavascriptInterface
@@ -106,9 +112,21 @@ fun ReproductorYouTube(fuente: Fuente, onError: () -> Unit) {
                     }
 
                     webViewClient = object : WebViewClient() {
+                        override fun onPageStarted(view: WebView, url: String, favicon: Bitmap?) {
+                            if (h264PorOnPageStarted) view.evaluateJavascript(JS_SOLO_H264, null)
+                        }
+
                         override fun onPageFinished(view: WebView, url: String) {
                             view.evaluateJavascript(JS_VIGILAR, null)
                         }
+                    }
+
+                    // Antes de que cargue el reproductor: ocultar VP9/AV1 para que YouTube
+                    // mande H.264, que todos los decodificadores de TV dibujan bien.
+                    if (WebViewFeature.isFeatureSupported(WebViewFeature.DOCUMENT_START_SCRIPT)) {
+                        WebViewCompat.addDocumentStartJavaScript(this, JS_SOLO_H264, setOf("*"))
+                    } else {
+                        h264PorOnPageStarted = true
                     }
 
                     // YouTube exige un Referer para los embeds (si falta: error 152/153).
@@ -166,10 +184,33 @@ private const val JS_VIGILAR = """
       if (v.paused) { try { v.play(); } catch(e){} }
       if (v.currentTime > 0) arranco = true;
       Android.estado('Video ' + v.videoWidth + 'x' + v.videoHeight +
+                     (window.__h264 ? ' · H.264' : ' · códec libre') +
                      (arranco ? ' · reproduciendo' : ' · cargando'));
+      if (arranco && v.videoWidth === 0 && v.currentTime > 15) {
+        clearInterval(t); Android.error('solo audio, sin video'); return;
+      }
     }
     if (!arranco && Date.now() - inicio > 30000) { clearInterval(t); Android.error('no arrancó'); }
-    if (arranco && Date.now() - inicio > 20000) clearInterval(t);
+    if (arranco && v && v.videoWidth > 0 && Date.now() - inicio > 20000) clearInterval(t);
   }, 2000);
+})();
+"""
+
+/**
+ * Igual que la extensión "h264ify": le dice al reproductor que el aparato no soporta
+ * VP9 ni AV1, así YouTube elige H.264. Corre en todos los frames antes que la página.
+ */
+private const val JS_SOLO_H264 = """
+(function(){
+  if (window.__h264) return; window.__h264 = true;
+  var no = /vp0?9|av0?1/i;
+  function envolver(obj){
+    if (!obj || !obj.isTypeSupported) return;
+    var orig = obj.isTypeSupported.bind(obj);
+    obj.isTypeSupported = function(t){ return no.test(t) ? false : orig(t); };
+  }
+  envolver(window.MediaSource); envolver(window.ManagedMediaSource);
+  var cpt = HTMLMediaElement.prototype.canPlayType;
+  HTMLMediaElement.prototype.canPlayType = function(t){ return no.test(t) ? '' : cpt.call(this, t); };
 })();
 """

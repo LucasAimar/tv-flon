@@ -14,8 +14,8 @@ android {
         // API 23 cubre Fire TV Stick viejos (Fire OS 6 = API 25) y cualquier Android TV actual.
         minSdk = 23
         targetSdk = 35
-        versionCode = 2
-        versionName = "0.2.0"
+        versionCode = 4
+        versionName = "0.3.1"
 
         // URL del canales.json remoto. Cambiala por la tuya (GitHub raw, tu servidor, etc.).
         // Si falla, la app usa la última copia descargada o la que viene dentro del APK.
@@ -70,4 +70,5 @@ dependencies {
     implementation(libs.kotlinx.coroutines.android)
     implementation(libs.datastore.preferences)
     implementation(libs.coil.compose)
+    implementation(libs.androidx.webkit)
 }

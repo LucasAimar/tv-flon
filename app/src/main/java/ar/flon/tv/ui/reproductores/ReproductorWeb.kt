@@ -29,18 +29,19 @@ import okhttp3.Request
  * - Con `extraerIframe` (ej. Telefe): baja el HTML de la página, busca el iframe cuyo src
  *   contiene ese fragmento (con su token del momento) y abre solo ese reproductor,
  *   que ya ocupa toda la pantalla.
- * - Sin `extraerIframe`: abre la página entera e inyecta CSS para agrandar el primer <video>.
+ * - Sin `extraerIframe`: abre la página entera y lleva a pantalla completa el elemento
+ *   indicado por `selector` (por defecto el primer <video>; para Telefe, el iframe del reproductor).
  */
 @SuppressLint("SetJavaScriptEnabled")
 @Composable
-fun ReproductorWeb(fuente: Fuente, onError: () -> Unit) {
+fun ReproductorWeb(fuente: Fuente, onError: (String) -> Unit) {
     val pagina = fuente.url.orEmpty()
     var destino by remember { mutableStateOf<String?>(null) }
 
     LaunchedEffect(pagina) {
         val patron = fuente.extraerIframe
         destino = if (patron == null) pagina else extraerIframe(pagina, patron)
-        if (destino == null) onError()
+        if (destino == null) onError("no se encontró el reproductor en la página")
     }
 
     val url = destino
@@ -62,7 +63,7 @@ fun ReproductorWeb(fuente: Fuente, onError: () -> Unit) {
                 webChromeClient = WebChromeClient()
                 webViewClient = object : WebViewClient() {
                     override fun onPageFinished(view: WebView, url: String) {
-                        if (fuente.extraerIframe == null) view.evaluateJavascript(JS_PANTALLA_COMPLETA, null)
+                        if (fuente.extraerIframe == null) view.evaluateJavascript(jsPantallaCompleta(fuente.selector ?: "video"), null)
                     }
                 }
                 loadUrl(url, mapOf("Referer" to pagina))
@@ -87,17 +88,20 @@ private suspend fun extraerIframe(pagina: String, patron: String): String? = wit
     }
 }
 
-/** Pone el primer <video> de la página fijo y a pantalla completa, por encima de todo. */
-private const val JS_PANTALLA_COMPLETA = """
+/** Lleva el elemento `selector` a pantalla completa, fijo y por encima de todo. */
+private fun jsPantallaCompleta(selector: String) = """
 (function(){
+  var sel = ${org.json.JSONObject.quote(selector)};
   function aplicar(){
-    var v = document.querySelector('video');
+    var v = document.querySelector(sel);
     if(!v) return false;
-    v.style.cssText = 'position:fixed!important;inset:0!important;width:100vw!important;height:100vh!important;z-index:2147483647!important;background:#000!important;object-fit:contain!important';
+    v.style.cssText = 'position:fixed!important;inset:0!important;width:100vw!important;height:100vh!important;z-index:2147483647!important;background:#000!important;border:0!important;object-fit:contain!important';
+    document.documentElement.style.overflow = 'hidden';
     document.body.style.overflow = 'hidden';
-    v.muted = false; v.play && v.play();
+    if (v.tagName === 'VIDEO') { v.muted = false; v.play && v.play(); }
     return true;
   }
-  if(!aplicar()){ var n=0, t=setInterval(function(){ if(aplicar()||++n>20) clearInterval(t); }, 1000); }
+  var n = 0, t = setInterval(function(){ aplicar(); if(++n > 30) clearInterval(t); }, 1000);
+  aplicar();
 })();
 """

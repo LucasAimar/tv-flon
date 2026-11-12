@@ -42,6 +42,8 @@ data class Fuente(
      * Ej.: url ".../ID.m3u8?access_token={access_token}"
      */
     val tokenUrl: String? = null,
+    /** Para tipo web: selector CSS del elemento a llevar a pantalla completa (por defecto "video"). */
+    val selector: String? = null,
     val prioridad: Int = 1,
     val notas: String? = null,
 )
@@ -51,4 +53,6 @@ object TipoFuente {
     const val YOUTUBE = "youtube"
     const val WEB = "web"
     const val AUDIO = "audio"
+    /** Abre el vivo del canal en la app oficial de YouTube del TV (sale de TV Floñ). */
+    const val YOUTUBE_APP = "youtube-app"
 }

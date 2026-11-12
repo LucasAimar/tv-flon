@@ -1,5 +1,6 @@
 package ar.flon.tv.ui.reproductores
 
+import android.os.SystemClock
 import android.view.View
 import androidx.annotation.OptIn
 import androidx.compose.foundation.layout.Box
@@ -32,6 +33,7 @@ import ar.flon.tv.data.Canal
 import ar.flon.tv.data.Fuente
 import ar.flon.tv.data.Http
 import ar.flon.tv.data.resolverUrl
+import kotlinx.coroutines.delay
 
 /**
  * ExoPlayer para fuentes hls (video) y audio (radios: mp3, aac o HLS de audio).
@@ -40,7 +42,7 @@ import ar.flon.tv.data.resolverUrl
  */
 @OptIn(UnstableApi::class)
 @Composable
-fun ReproductorExo(fuente: Fuente, soloAudio: Boolean, canal: Canal, onError: () -> Unit) {
+fun ReproductorExo(fuente: Fuente, soloAudio: Boolean, canal: Canal, onError: (String) -> Unit) {
     val context = LocalContext.current
 
     val player = remember {
@@ -57,26 +59,62 @@ fun ReproductorExo(fuente: Fuente, soloAudio: Boolean, canal: Canal, onError: ()
             .apply { playWhenReady = true }
     }
 
-    // Resuelve la URL (pide el token si hace falta) y arranca. `intentos` sube cuando
-    // un token vence: se pide uno nuevo hasta 2 veces antes de pasar a la fuente siguiente.
+    // Resuelve la URL (pide el token si hace falta) y arranca. `intentos` sube para
+    // reconectar: token vencido, o un vivo que ya sonaba y se cortó.
     var intentos by remember { mutableIntStateOf(0) }
     LaunchedEffect(intentos) {
-        val url = resolverUrl(fuente)
-        if (url == null) { onError(); return@LaunchedEffect }
+        if (intentos > 0) delay(2_000) // pausa corta antes de reconectar
+        val url = try {
+            resolverUrl(fuente)
+        } catch (e: kotlinx.coroutines.CancellationException) {
+            throw e
+        } catch (e: Exception) {
+            onError(e.message ?: e.javaClass.simpleName)
+            return@LaunchedEffect
+        }
         player.setMediaItem(MediaItem.fromUri(url))
         player.prepare()
     }
 
     DisposableEffect(player) {
+        // Reconexión: si la fuente ya llegó a sonar, un corte no la descarta; se reconecta
+        // hasta 5 veces seguidas. El contador vuelve a 0 tras un minuto sonando bien.
+        // (Las radios de StreamTheWorld cierran la conexión cada tanto.)
+        var yaSono = false
+        var reconexiones = 0
+        var sonandoDesde = 0L
+
+        fun reconectar(): Boolean {
+            if (!yaSono) return false
+            if (sonandoDesde > 0 && SystemClock.elapsedRealtime() - sonandoDesde > 60_000) reconexiones = 0
+            if (reconexiones >= 5) return false
+            reconexiones++
+            sonandoDesde = 0L
+            intentos++
+            return true
+        }
+
         val listener = object : Player.Listener {
+            override fun onIsPlayingChanged(isPlaying: Boolean) {
+                if (isPlaying) {
+                    yaSono = true
+                    sonandoDesde = SystemClock.elapsedRealtime()
+                }
+            }
+
+            override fun onPlaybackStateChanged(state: Int) {
+                // Un stream en vivo no "termina": si el servidor cerró la conexión, reconectar.
+                if (state == Player.STATE_ENDED && !reconectar()) onError("el stream terminó")
+            }
+
             override fun onPlayerError(error: PlaybackException) {
                 if (error.errorCode == PlaybackException.ERROR_CODE_BEHIND_LIVE_WINDOW) {
                     player.seekToDefaultPosition()
                     player.prepare()
                 } else if (fuente.tokenUrl != null && intentos < 2) {
                     intentos++
-                } else {
-                    onError()
+                } else if (!reconectar()) {
+                    onError(describir(error))
                 }
             }
         }
@@ -108,4 +146,17 @@ fun ReproductorExo(fuente: Fuente, soloAudio: Boolean, canal: Canal, onError: ()
             }
         }
     }
+}
+
+/** Texto corto del error de ExoPlayer, con el código HTTP si lo hay. */
+@OptIn(UnstableApi::class)
+private fun describir(e: PlaybackException): String {
+    var causa: Throwable? = e.cause
+    while (causa != null) {
+        if (causa is androidx.media3.datasource.HttpDataSource.InvalidResponseCodeException) {
+            return "HTTP ${causa.responseCode} (${e.errorCodeName})"
+        }
+        causa = causa.cause
+    }
+    return e.errorCodeName + (e.cause?.message?.let { " · " + it.take(60) } ?: "")
 }

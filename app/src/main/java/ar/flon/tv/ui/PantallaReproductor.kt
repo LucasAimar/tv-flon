@@ -7,7 +7,9 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
@@ -15,6 +17,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -26,6 +29,7 @@ import androidx.tv.material3.MaterialTheme
 import androidx.tv.material3.Text
 import ar.flon.tv.data.Canal
 import ar.flon.tv.data.TipoFuente
+import ar.flon.tv.ui.reproductores.AbrirAppYouTube
 import ar.flon.tv.ui.reproductores.ReproductorExo
 import ar.flon.tv.ui.reproductores.ReproductorWeb
 import ar.flon.tv.ui.reproductores.ReproductorYouTube
@@ -33,7 +37,8 @@ import kotlinx.coroutines.delay
 
 /**
  * Reproduce un canal probando sus fuentes en orden de prioridad.
- * Si una fuente falla, pasa automáticamente a la siguiente.
+ * Si una fuente falla, anota el motivo y pasa a la siguiente.
+ * Si fallan todas, muestra el motivo de cada una (sirve para diagnosticar).
  */
 @Composable
 fun PantallaReproductor(canal: Canal, onVolver: () -> Unit) {
@@ -41,24 +46,36 @@ fun PantallaReproductor(canal: Canal, onVolver: () -> Unit) {
 
     val fuentes = remember(canal.id) { canal.fuentesOrdenadas }
     var indice by remember(canal.id) { mutableIntStateOf(0) }
-    val siguiente: () -> Unit = { indice++ }
+    val errores = remember(canal.id) { mutableStateListOf<String>() }
+    val fallo: (String) -> Unit = { motivo ->
+        val f = fuentes.getOrNull(indice)
+        if (f != null) errores += "${indice + 1}. ${f.tipo}: $motivo"
+        indice++
+    }
 
     Box(Modifier.fillMaxSize().background(Color.Black)) {
         val fuente = fuentes.getOrNull(indice)
         if (fuente == null) {
-            Column(Modifier.align(Alignment.Center), horizontalAlignment = Alignment.CenterHorizontally) {
+            Column(
+                Modifier.align(Alignment.Center).padding(48.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+            ) {
                 Text("No se pudo reproducir ${canal.nombre}", style = MaterialTheme.typography.headlineSmall)
-                Text("Probadas ${fuentes.size} fuente(s). Volvé con Atrás.", color = Color.Gray)
+                Spacer(Modifier.height(16.dp))
+                errores.forEach { Text(it, color = Color.LightGray) }
+                Spacer(Modifier.height(16.dp))
+                Text("Volvé con Atrás.", color = Color.Gray)
             }
         } else {
             // key: cada fuente crea su reproductor de cero y libera el anterior.
             key(canal.id, indice) {
                 when (fuente.tipo) {
-                    TipoFuente.HLS -> ReproductorExo(fuente, soloAudio = false, canal = canal, onError = siguiente)
-                    TipoFuente.AUDIO -> ReproductorExo(fuente, soloAudio = true, canal = canal, onError = siguiente)
-                    TipoFuente.YOUTUBE -> ReproductorYouTube(fuente, onError = siguiente)
-                    TipoFuente.WEB -> ReproductorWeb(fuente, onError = siguiente)
-                    else -> LaunchedEffect(Unit) { siguiente() }
+                    TipoFuente.HLS -> ReproductorExo(fuente, soloAudio = false, canal = canal, onError = fallo)
+                    TipoFuente.AUDIO -> ReproductorExo(fuente, soloAudio = true, canal = canal, onError = fallo)
+                    TipoFuente.YOUTUBE -> ReproductorYouTube(fuente, onError = fallo)
+                    TipoFuente.WEB -> ReproductorWeb(fuente, onError = fallo)
+                    TipoFuente.YOUTUBE_APP -> AbrirAppYouTube(fuente, onError = fallo)
+                    else -> LaunchedEffect(Unit) { fallo("tipo desconocido") }
                 }
             }
             CartelCanal(canal, indice, fuentes.size, fuente.tipo)

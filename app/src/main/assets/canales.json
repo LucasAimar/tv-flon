@@ -27,10 +27,23 @@
           "notas": "Token del mismo servicio que usa mitelefe.com/telefe-en-vivo; HLS H.264 sin DRM"
         },
         {
+          "tipo": "web",
+          "url": "https://www.mitelefe.com/telefe-en-vivo",
+          "selector": "#player-container iframe",
+          "prioridad": 2,
+          "notas": "Página oficial; se agranda el reproductor"
+        },
+        {
           "tipo": "youtube",
           "canalId": "UCHc3el42hXKKhjs_1vzWk9A",
-          "prioridad": 2,
+          "prioridad": 3,
           "notas": "Solo cuando Telefe transmite en vivo por YouTube"
+        },
+        {
+          "tipo": "youtube-app",
+          "canalId": "UCHc3el42hXKKhjs_1vzWk9A",
+          "prioridad": 4,
+          "notas": "Abre la app oficial de YouTube"
         }
       ]
     },
@@ -52,6 +65,12 @@
           "canalId": "UC0DM_mHV2u6dj8ig51GkQwg",
           "prioridad": 2,
           "notas": "Solo vivos ocasionales"
+        },
+        {
+          "tipo": "youtube-app",
+          "canalId": "UC0DM_mHV2u6dj8ig51GkQwg",
+          "prioridad": 3,
+          "notas": "Abre la app oficial de YouTube"
         }
       ]
     },
@@ -65,7 +84,8 @@
           "url": "https://prepublish.f.qaotic.net/a07/americahls-100056/playlist_720p.m3u8",
           "prioridad": 1
         }
-      ]
+      ],
+      "notas": "El HLS falla en los TV y americatv.com.ar/vivo no tiene reproductor libre; pendiente"
     },
     {
       "id": "elnueve",
@@ -76,6 +96,12 @@
           "tipo": "youtube",
           "canalId": "UCUT4NmGqjrVpKf2JyiS_bbA",
           "prioridad": 1
+        },
+        {
+          "tipo": "youtube-app",
+          "canalId": "UCUT4NmGqjrVpKf2JyiS_bbA",
+          "prioridad": 2,
+          "notas": "Abre la app oficial de YouTube"
         }
       ]
     },
@@ -88,6 +114,12 @@
           "tipo": "youtube",
           "canalId": "UCs231K71Bnu5295_x0MB5Pg",
           "prioridad": 1
+        },
+        {
+          "tipo": "youtube-app",
+          "canalId": "UCs231K71Bnu5295_x0MB5Pg",
+          "prioridad": 2,
+          "notas": "Abre la app oficial de YouTube"
         }
       ]
     },
@@ -114,14 +146,25 @@
       "categoria": "Noticias",
       "fuentes": [
         {
-          "tipo": "youtube",
-          "canalId": "UCj6PcyLvpnIRT_2W_mwa9Aw",
-          "prioridad": 1
+          "tipo": "hls",
+          "url": "https://live-01-01-tn.vodgc.net/TN_DAI_Beta/index.m3u8",
+          "headers": {
+            "Referer": "https://tn.com.ar/",
+            "Origin": "https://tn.com.ar"
+          },
+          "prioridad": 1,
+          "notas": "El que usa tn.com.ar/envivo/24hs"
         },
         {
-          "tipo": "web",
-          "url": "https://tn.com.ar/envivo/24hs/",
+          "tipo": "youtube",
+          "canalId": "UCj6PcyLvpnIRT_2W_mwa9Aw",
           "prioridad": 2
+        },
+        {
+          "tipo": "youtube-app",
+          "canalId": "UCj6PcyLvpnIRT_2W_mwa9Aw",
+          "prioridad": 3,
+          "notas": "Abre la app oficial de YouTube"
         }
       ]
     },
@@ -134,6 +177,12 @@
           "tipo": "youtube",
           "canalId": "UCFgk2Q2mVO1BklRQhSv6p0w",
           "prioridad": 1
+        },
+        {
+          "tipo": "youtube-app",
+          "canalId": "UCFgk2Q2mVO1BklRQhSv6p0w",
+          "prioridad": 2,
+          "notas": "Abre la app oficial de YouTube"
         }
       ]
     },
@@ -143,17 +192,23 @@
       "categoria": "Noticias",
       "fuentes": [
         {
-          "tipo": "youtube",
-          "canalId": "UCR9120YBAqMfntqgRTKmkjQ",
-          "prioridad": 1
-        },
-        {
           "tipo": "hls",
           "url": "https://g1.proy-hor.transport.edge-access.net/a15/ngrp:a24-100056_all/Playlist.m3u8",
           "headers": {
             "Referer": "https://vmf.edge-apps.net/"
           },
+          "prioridad": 1
+        },
+        {
+          "tipo": "youtube",
+          "canalId": "UCR9120YBAqMfntqgRTKmkjQ",
           "prioridad": 2
+        },
+        {
+          "tipo": "youtube-app",
+          "canalId": "UCR9120YBAqMfntqgRTKmkjQ",
+          "prioridad": 3,
+          "notas": "Abre la app oficial de YouTube"
         }
       ]
     },
@@ -166,6 +221,12 @@
           "tipo": "youtube",
           "canalId": "UCba3hpU7EFBSk817y9qZkiA",
           "prioridad": 1
+        },
+        {
+          "tipo": "youtube-app",
+          "canalId": "UCba3hpU7EFBSk817y9qZkiA",
+          "prioridad": 2,
+          "notas": "Abre la app oficial de YouTube"
         }
       ]
     },
@@ -178,6 +239,12 @@
           "tipo": "youtube",
           "canalId": "UCT7KFGv6s2a-rh2Jq8ZdM1g",
           "prioridad": 1
+        },
+        {
+          "tipo": "youtube-app",
+          "canalId": "UCT7KFGv6s2a-rh2Jq8ZdM1g",
+          "prioridad": 2,
+          "notas": "Abre la app oficial de YouTube"
         }
       ]
     },
@@ -209,9 +276,10 @@
           "prioridad": 1
         },
         {
-          "tipo": "hls",
-          "url": "https://stream.arcast.net:4443/canal10/ngrp:canal10_all/playlist.m3u8",
-          "prioridad": 2
+          "tipo": "youtube-app",
+          "canalId": "UCUzonpa3XKurQVycdMY70XQ",
+          "prioridad": 2,
+          "notas": "Abre la app oficial de YouTube"
         }
       ]
     },
@@ -224,6 +292,12 @@
           "tipo": "youtube",
           "canalId": "UCiaePeoCqpU8hBHiNrgkzrA",
           "prioridad": 1
+        },
+        {
+          "tipo": "youtube-app",
+          "canalId": "UCiaePeoCqpU8hBHiNrgkzrA",
+          "prioridad": 2,
+          "notas": "Abre la app oficial de YouTube"
         }
       ]
     },
@@ -265,6 +339,40 @@
       ]
     },
     {
+      "id": "radiocanal4",
+      "nombre": "Radiocanal Canal 4 (San Francisco)",
+      "categoria": "Córdoba",
+      "fuentes": [
+        {
+          "tipo": "hls",
+          "url": "http://204.199.3.2/.m3u8",
+          "headers": {
+            "Referer": "http://www.radiocanal.com.ar/canal4"
+          },
+          "prioridad": 1,
+          "notas": "El que usa radiocanal.com.ar/canal4"
+        }
+      ]
+    },
+    {
+      "id": "3564",
+      "nombre": "3564 Stream TV",
+      "categoria": "Córdoba",
+      "fuentes": [
+        {
+          "tipo": "youtube",
+          "canalId": "UCPzkMEEvBo_r_GfKSbuNrhA",
+          "prioridad": 1,
+          "notas": "No transmite 24/7"
+        },
+        {
+          "tipo": "youtube-app",
+          "canalId": "UCPzkMEEvBo_r_GfKSbuNrhA",
+          "prioridad": 2
+        }
+      ]
+    },
+    {
       "id": "tyc",
       "nombre": "TyC Sports",
       "categoria": "Deportes",
@@ -279,18 +387,6 @@
           "tipo": "hls",
           "url": "https://amg26268-amg26268c14-freelivesports-emea-10267.playouts.now.amagi.tv/ts-us-e2-n2/playlist/amg26268-sportsstudio-tycsports-freelivesportsemea/playlist.m3u8",
           "prioridad": 2
-        }
-      ]
-    },
-    {
-      "id": "carastv",
-      "nombre": "Caras TV",
-      "categoria": "Otros",
-      "fuentes": [
-        {
-          "tipo": "hls",
-          "url": "https://unlimited1-us.dps.live/carastv/carastv.smil/playlist.m3u8",
-          "prioridad": 1
         }
       ]
     },
@@ -473,18 +569,6 @@
       ]
     },
     {
-      "id": "urbana",
-      "nombre": "Urbana Play",
-      "categoria": "Radios",
-      "fuentes": [
-        {
-          "tipo": "audio",
-          "url": "https://vmf.edge-apps.net/playlist/urbana.m3u8/play.m3u8",
-          "prioridad": 1
-        }
-      ]
-    },
-    {
       "id": "la100",
       "nombre": "La 100",
       "categoria": "Radios",
@@ -547,6 +631,19 @@
           "tipo": "audio",
           "url": "https://playerservices.streamtheworld.com/api/livestream-redirect/cosquinrock.mp3",
           "prioridad": 1
+        }
+      ]
+    },
+    {
+      "id": "fmcontacto",
+      "nombre": "FM Contacto 91.5 (Radiocanal)",
+      "categoria": "Radios",
+      "fuentes": [
+        {
+          "tipo": "audio",
+          "url": "http://204.199.3.2:8000/FmContacto",
+          "prioridad": 1,
+          "notas": "El que usa radiocanal.com.ar/radio"
         }
       ]
     }

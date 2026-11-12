@@ -26,6 +26,14 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
     private val _canalActual = MutableStateFlow<Canal?>(null)
     val canalActual: StateFlow<Canal?> = _canalActual.asStateFlow()
 
+    /** Pestaña elegida en la grilla; se conserva al entrar y salir de un canal. */
+    private val _categoria = MutableStateFlow<String?>(null)
+    val categoria: StateFlow<String?> = _categoria.asStateFlow()
+
+    /** Último canal abierto, para dejarle el foco al volver a la grilla. */
+    private val _ultimoCanal = MutableStateFlow<String?>(null)
+    val ultimoCanal: StateFlow<String?> = _ultimoCanal.asStateFlow()
+
     val favoritos: StateFlow<Set<String>> =
         prefs.favoritos.stateIn(viewModelScope, SharingStarted.Eagerly, emptySet())
 
@@ -34,12 +42,20 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
             val l = repo.cargar()
             _lista.value = l
             // Como un televisor: arranca en el último canal visto.
-            prefs.ultimoCanal()?.let { id -> l.canales.find { it.id == id } }?.let { abrir(it) }
+            prefs.ultimoCanal()?.let { id -> l.canales.find { it.id == id } }?.let {
+                _categoria.value = it.categoria
+                abrir(it)
+            }
         }
+    }
+
+    fun elegirCategoria(nombre: String) {
+        _categoria.value = nombre
     }
 
     fun abrir(canal: Canal) {
         _canalActual.value = canal
+        _ultimoCanal.value = canal.id
         viewModelScope.launch { prefs.guardarUltimo(canal.id) }
     }
 

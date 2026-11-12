@@ -12,13 +12,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.itemsIndexed
+import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
@@ -49,6 +46,9 @@ private const val FAVORITOS = "★ Favoritos"
 fun PantallaInicio(
     lista: ListaCanales,
     favoritos: Set<String>,
+    categoriaElegida: String?,
+    canalEnfocado: String?,
+    onCategoria: (String) -> Unit,
     onAbrir: (Canal) -> Unit,
     onFavorito: (Canal) -> Unit,
 ) {
@@ -58,8 +58,8 @@ fun PantallaInicio(
             addAll(lista.categorias.filter { c -> lista.canales.any { it.categoria == c } })
         }
     }
-    var seleccion by rememberSaveable { mutableIntStateOf(0) }
-    if (seleccion >= categorias.size) seleccion = 0
+    // La categoría vive en el ViewModel: al volver de un canal se mantiene la misma pestaña.
+    val seleccion = categorias.indexOf(categoriaElegida).takeIf { it >= 0 } ?: 0
     val categoria = categorias.getOrNull(seleccion)
 
     val canales = remember(categoria, lista, favoritos) {
@@ -67,13 +67,20 @@ fun PantallaInicio(
         else lista.canales.filter { it.categoria == categoria }
     }
 
+    // Al entrar, el foco va al canal que se estaba viendo (o al primero de la grilla).
+    val indiceFoco = canales.indexOfFirst { it.id == canalEnfocado }.takeIf { it >= 0 } ?: 0
     val focoGrilla = remember { FocusRequester() }
-    LaunchedEffect(Unit) { delay(150); runCatching { focoGrilla.requestFocus() } }
+    val estadoGrilla = rememberLazyGridState()
+    LaunchedEffect(Unit) {
+        estadoGrilla.scrollToItem(indiceFoco)
+        delay(150)
+        runCatching { focoGrilla.requestFocus() }
+    }
 
     Column(Modifier.fillMaxSize().padding(horizontal = 48.dp, vertical = 24.dp)) {
         TabRow(selectedTabIndex = seleccion) {
             categorias.forEachIndexed { i, nombre ->
-                Tab(selected = i == seleccion, onFocus = { seleccion = i }) {
+                Tab(selected = i == seleccion, onFocus = { onCategoria(nombre) }) {
                     Text(
                         nombre,
                         modifier = Modifier.padding(horizontal = 16.dp, vertical = 6.dp),
@@ -88,12 +95,13 @@ fun PantallaInicio(
             contentPadding = PaddingValues(vertical = 24.dp),
             horizontalArrangement = Arrangement.spacedBy(20.dp),
             verticalArrangement = Arrangement.spacedBy(20.dp),
+            state = estadoGrilla,
             modifier = Modifier.fillMaxWidth(),
         ) {
             itemsIndexed(canales, key = { _, c -> c.id }) { i, canal ->
                 TarjetaCanal(
                     canal = canal,
-                    modifier = if (i == 0) Modifier.focusRequester(focoGrilla) else Modifier,
+                    modifier = if (i == indiceFoco) Modifier.focusRequester(focoGrilla) else Modifier,
                     esFavorito = canal.id in favoritos,
                     onClick = { onAbrir(canal) },
                     onLongClick = { onFavorito(canal) },
