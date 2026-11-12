@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Banner provisorio 320x180 (16:9) para la pantalla de inicio de TV.
+     Reemplazalo por un PNG xhdpi de 320x180 con el nombre de la app cuando lo tengas. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="320dp"
+    android:height="180dp"
+    android:viewportWidth="320"
+    android:viewportHeight="180">
+    <path android:fillColor="#1B2A49" android:pathData="M0,0h320v180h-320z" />
+    <path android:fillColor="#2E4A7D" android:pathData="M0,120h320v60h-320z" />
+    <path android:fillColor="#FFFFFF" android:pathData="M95,50h80a10,10 0 0 1 10,10v50a10,10 0 0 1 -10,10h-80a10,10 0 0 1 -10,-10v-50a10,10 0 0 1 10,-10z" />
+    <path android:fillColor="#1B2A49" android:pathData="M123,68l28,17l-28,17z" />
+    <path android:fillColor="#FFB547" android:pathData="M205,70m-14,0a14,14 0 1 1 28,0a14,14 0 1 1 -28,0" />
+    <path android:fillColor="#FFB547" android:pathData="M230,95m-9,0a9,9 0 1 1 18,0a9,9 0 1 1 -18,0" />
+</vector>
