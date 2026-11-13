@@ -5,7 +5,16 @@ import android.view.View
 import androidx.annotation.OptIn
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.unit.dp
+import coil.compose.AsyncImage
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
@@ -140,9 +149,29 @@ fun ReproductorExo(fuente: Fuente, soloAudio: Boolean, canal: Canal, onError: (S
             modifier = Modifier.fillMaxSize(),
         )
         if (soloAudio) {
+            // Radio: logo grande sobre fondo claro (o un ícono si no hay logo) y el nombre.
             Column(Modifier.align(Alignment.Center), horizontalAlignment = Alignment.CenterHorizontally) {
-                Text("📻", style = MaterialTheme.typography.displayLarge)
+                if (canal.logo != null) {
+                    Box(
+                        Modifier
+                            .size(width = 420.dp, height = 240.dp)
+                            .background(Color(0xFFF2F4F7), RoundedCornerShape(16.dp))
+                            .padding(24.dp),
+                        contentAlignment = Alignment.Center,
+                    ) {
+                        AsyncImage(
+                            model = canal.logo,
+                            contentDescription = canal.nombre,
+                            contentScale = ContentScale.Fit,
+                            modifier = Modifier.fillMaxSize(),
+                        )
+                    }
+                } else {
+                    Text("📻", style = MaterialTheme.typography.displayLarge)
+                }
+                Spacer(Modifier.height(24.dp))
                 Text(canal.nombre, style = MaterialTheme.typography.displaySmall, color = Color.White)
+                Text("↓ para cambiar de radio", color = Color.Gray, modifier = Modifier.padding(top = 12.dp))
             }
         }
     }

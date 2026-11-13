@@ -41,7 +41,13 @@ import kotlinx.coroutines.delay
  * Si fallan todas, muestra el motivo de cada una (sirve para diagnosticar).
  */
 @Composable
-fun PantallaReproductor(canal: Canal, onVolver: () -> Unit) {
+fun PantallaReproductor(
+    canal: Canal,
+    onVolver: () -> Unit,
+    /** Canales de la misma categoría, para la fila de cambio rápido. */
+    vecinos: List<Canal> = emptyList(),
+    onCambiar: (Canal) -> Unit = {},
+) {
     BackHandler(onBack = onVolver)
 
     val fuentes = remember(canal.id) { canal.fuentesOrdenadas }
@@ -79,6 +85,11 @@ fun PantallaReproductor(canal: Canal, onVolver: () -> Unit) {
                 }
             }
             CartelCanal(canal, indice, fuentes.size, fuente.tipo)
+        }
+
+        // Fila de cambio rápido (flecha abajo). Por ahora solo en las radios.
+        if (canal.esRadio && vecinos.size > 1) {
+            FilaCambio(actual = canal, canales = vecinos, titulo = canal.categoria, onCambiar = onCambiar)
         }
     }
 }

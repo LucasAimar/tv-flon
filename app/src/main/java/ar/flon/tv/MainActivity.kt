@@ -1,6 +1,7 @@
 package ar.flon.tv
 
 import android.os.Bundle
+import android.view.KeyEvent
 import android.view.WindowManager
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -9,6 +10,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -19,18 +21,27 @@ import androidx.tv.material3.MaterialTheme
 import androidx.tv.material3.Text
 import androidx.tv.material3.darkColorScheme
 import ar.flon.tv.ui.BotonActualizar
+import ar.flon.tv.ui.InterceptorTeclas
+import ar.flon.tv.ui.LocalTeclas
 import ar.flon.tv.ui.PantallaInicio
 import ar.flon.tv.ui.PantallaReproductor
 
 class MainActivity : ComponentActivity() {
 
     private val vm: MainViewModel by viewModels()
+    private val teclas = InterceptorTeclas()
+
+    /** Todas las teclas pasan primero por acá (antes que un WebView de YouTube). */
+    override fun dispatchKeyEvent(event: KeyEvent): Boolean =
+        teclas.despachar(event) || super.dispatchKeyEvent(event)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            MaterialTheme(colorScheme = darkColorScheme()) {
-                App(vm, onPantallaEncendida = ::pantallaEncendida)
+            CompositionLocalProvider(LocalTeclas provides teclas) {
+                MaterialTheme(colorScheme = darkColorScheme()) {
+                    App(vm, onPantallaEncendida = ::pantallaEncendida)
+                }
             }
         }
     }
@@ -70,7 +81,12 @@ private fun App(vm: MainViewModel, onPantallaEncendida: (Boolean) -> Unit) {
                 modifier = Modifier.align(Alignment.Center),
                 style = MaterialTheme.typography.headlineSmall,
             )
-            c != null -> PantallaReproductor(canal = c, onVolver = vm::cerrar)
+            c != null -> PantallaReproductor(
+                canal = c,
+                onVolver = vm::cerrar,
+                vecinos = l.canales.filter { it.categoria == c.categoria },
+                onCambiar = vm::abrir,
+            )
             else -> PantallaInicio(
                 lista = l,
                 favoritos = favoritos,

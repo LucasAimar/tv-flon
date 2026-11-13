@@ -14,6 +14,7 @@
       "id": "telefe",
       "nombre": "Telefe",
       "categoria": "Aire",
+      "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cc/Telefe_%28nuevo_logo%29.png/960px-Telefe_%28nuevo_logo%29.png",
       "fuentes": [
         {
           "tipo": "hls",
@@ -51,6 +52,7 @@
       "id": "eltrece",
       "nombre": "El Trece",
       "categoria": "Aire",
+      "logo": "https://i.imgur.com/TrgBAdA.png",
       "fuentes": [
         {
           "tipo": "hls",
@@ -78,19 +80,26 @@
       "id": "america",
       "nombre": "América TV",
       "categoria": "Aire",
+      "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c8/Am%C3%A9rica_TV_%28Nuevo_logo_Junio_2020%29.png/500px-Am%C3%A9rica_TV_%28Nuevo_logo_Junio_2020%29.png",
+      "notas": "El HLS falla en los TV y americatv.com.ar/vivo no tiene reproductor libre; pendiente",
       "fuentes": [
         {
           "tipo": "hls",
           "url": "https://prepublish.f.qaotic.net/a07/americahls-100056/playlist_720p.m3u8",
-          "prioridad": 1
+          "prioridad": 1,
+          "headers": {
+            "Referer": "https://www.americatv.com.ar/",
+            "Origin": "https://www.americatv.com.ar"
+          },
+          "notas": "Daba HTTP 403 en los TV; prueba con Referer/Origin del sitio (13/11)"
         }
-      ],
-      "notas": "El HLS falla en los TV y americatv.com.ar/vivo no tiene reproductor libre; pendiente"
+      ]
     },
     {
       "id": "elnueve",
       "nombre": "El Nueve",
       "categoria": "Aire",
+      "logo": "https://i.imgur.com/cJHP7bU.png",
       "fuentes": [
         {
           "tipo": "youtube",
@@ -109,6 +118,7 @@
       "id": "canalsiete",
       "nombre": "TV Pública (Canal Siete)",
       "categoria": "Aire",
+      "logo": "https://i.imgur.com/NdQF9K9.png",
       "fuentes": [
         {
           "tipo": "youtube",
@@ -127,6 +137,7 @@
       "id": "nettv",
       "nombre": "Net TV",
       "categoria": "Aire",
+      "logo": "https://i.imgur.com/IhJ0BjF.png",
       "fuentes": [
         {
           "tipo": "hls",
@@ -144,6 +155,7 @@
       "id": "tn",
       "nombre": "TN",
       "categoria": "Noticias",
+      "logo": "https://i.imgur.com/vFwPhPS.png",
       "fuentes": [
         {
           "tipo": "hls",
@@ -172,6 +184,7 @@
       "id": "c5n",
       "nombre": "C5N",
       "categoria": "Noticias",
+      "logo": "https://i.imgur.com/5ZNZYjO.png",
       "fuentes": [
         {
           "tipo": "youtube",
@@ -190,6 +203,7 @@
       "id": "a24",
       "nombre": "A24",
       "categoria": "Noticias",
+      "logo": "https://i.ibb.co/TxJWSBds/A24-2025-svg.png",
       "fuentes": [
         {
           "tipo": "hls",
@@ -216,6 +230,7 @@
       "id": "lnmas",
       "nombre": "LN+",
       "categoria": "Noticias",
+      "logo": "https://i.imgur.com/Gj1kqH5.png",
       "fuentes": [
         {
           "tipo": "youtube",
@@ -234,6 +249,7 @@
       "id": "cronica",
       "nombre": "Crónica TV",
       "categoria": "Noticias",
+      "logo": "https://upload.wikimedia.org/wikipedia/commons/e/e8/Cr%C3%B3nica_TV_logotipo_%282008-2015%29.png",
       "fuentes": [
         {
           "tipo": "youtube",
@@ -252,6 +268,7 @@
       "id": "canal26",
       "nombre": "Canal 26",
       "categoria": "Noticias",
+      "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Canal_26_logo_%282022%29.svg/500px-Canal_26_logo_%282022%29.svg.png",
       "fuentes": [
         {
           "tipo": "hls",
@@ -269,6 +286,7 @@
       "id": "canal10cba",
       "nombre": "Canal 10 Córdoba",
       "categoria": "Córdoba",
+      "logo": "https://i.imgur.com/87WCHtd.png",
       "fuentes": [
         {
           "tipo": "youtube",
@@ -287,6 +305,7 @@
       "id": "eldoce",
       "nombre": "El Doce",
       "categoria": "Córdoba",
+      "logo": "https://i.imgur.com/HfyKPpD.png",
       "fuentes": [
         {
           "tipo": "youtube",
@@ -305,6 +324,7 @@
       "id": "uniteve",
       "nombre": "Uniteve",
       "categoria": "Córdoba",
+      "logo": "https://pbs.twimg.com/profile_images/720276300888453120/a_SDOmBc_400x400.jpg",
       "fuentes": [
         {
           "tipo": "hls",
@@ -318,6 +338,7 @@
       "id": "canal4vd",
       "nombre": "Canal 4 Villa Dolores",
       "categoria": "Córdoba",
+      "logo": "https://i.imgur.com/ZKSnGfw.png",
       "fuentes": [
         {
           "tipo": "hls",
@@ -330,6 +351,7 @@
       "id": "canal50",
       "nombre": "Canal 50 Morteros",
       "categoria": "Córdoba",
+      "logo": "https://i.imgur.com/IDhgBav.png",
       "fuentes": [
         {
           "tipo": "hls",
@@ -342,6 +364,7 @@
       "id": "radiocanal4",
       "nombre": "Radiocanal Canal 4 (San Francisco)",
       "categoria": "Córdoba",
+      "logo": "https://i.ibb.co/NNyDWsz/download-8.png",
       "fuentes": [
         {
           "tipo": "hls",
@@ -376,6 +399,7 @@
       "id": "tyc",
       "nombre": "TyC Sports",
       "categoria": "Deportes",
+      "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/54/TyC_Sports_logo.svg/960px-TyC_Sports_logo.svg.png",
       "fuentes": [
         {
           "tipo": "hls",
@@ -394,6 +418,7 @@
       "id": "argentinisima",
       "nombre": "Argentinísima Satelital",
       "categoria": "Otros",
+      "logo": "https://i.imgur.com/xFgJawa.png",
       "fuentes": [
         {
           "tipo": "hls",
@@ -406,6 +431,7 @@
       "id": "telemax",
       "nombre": "Telemax",
       "categoria": "Otros",
+      "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/13/Telemax_Argentina_%282018%29.png/960px-Telemax_Argentina_%282018%29.png",
       "fuentes": [
         {
           "tipo": "hls",
@@ -447,6 +473,7 @@
       "id": "mitrecba",
       "nombre": "Radio Mitre Córdoba",
       "categoria": "Radios",
+      "logo": "https://i.imgur.com/uvck4Vj.png",
       "fuentes": [
         {
           "tipo": "audio",
@@ -460,6 +487,7 @@
       "id": "mitre",
       "nombre": "Radio Mitre",
       "categoria": "Radios",
+      "logo": "https://i.imgur.com/uvck4Vj.png",
       "fuentes": [
         {
           "tipo": "youtube",
@@ -566,6 +594,7 @@
       "id": "convos",
       "nombre": "Radio con Vos",
       "categoria": "Radios",
+      "logo": "https://static.mytuner.mobi/media/tvos_radios/473/radio-con-vos-899-fm.eac1ac49.jpg",
       "fuentes": [
         {
           "tipo": "audio",
@@ -578,6 +607,7 @@
       "id": "la100",
       "nombre": "La 100",
       "categoria": "Radios",
+      "logo": "https://cloudfront-us-east-1.images.arcpublishing.com/radiomitre/CZJMM4BJVRFANO4VGMMYWSTEVE.png",
       "fuentes": [
         {
           "tipo": "hls",
@@ -614,6 +644,7 @@
       "id": "metro",
       "nombre": "Metro 95.1",
       "categoria": "Radios",
+      "logo": "https://i.imgur.com/D4nRp62.png",
       "fuentes": [
         {
           "tipo": "audio",
@@ -627,6 +658,7 @@
       "id": "rockandpop",
       "nombre": "Rock & Pop",
       "categoria": "Radios",
+      "logo": "https://fmrockandpop.com/images/ryp/R&P_Logo_web_207x112px.png",
       "fuentes": [
         {
           "tipo": "youtube",
@@ -657,6 +689,7 @@
       "id": "fmcontacto",
       "nombre": "FM Contacto 91.5 (Radiocanal)",
       "categoria": "Radios",
+      "logo": "https://i.ibb.co/NNyDWsz/download-8.png",
       "fuentes": [
         {
           "tipo": "audio",
