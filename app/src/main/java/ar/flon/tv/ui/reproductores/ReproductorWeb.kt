@@ -66,7 +66,9 @@ fun ReproductorWeb(fuente: Fuente, onError: (String) -> Unit) {
                         if (fuente.extraerIframe == null) view.evaluateJavascript(jsPantallaCompleta(fuente.selector ?: "video"), null)
                     }
                 }
-                loadUrl(url, mapOf("Referer" to pagina))
+                // Algunos reproductores solo funcionan si el pedido dice venir del sitio
+                // del canal (ej. América: sin Referer muestra "no disponible").
+                loadUrl(url, mapOf("Referer" to pagina) + fuente.headers)
                 requestFocus()
             }
         },

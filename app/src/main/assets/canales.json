@@ -84,15 +84,25 @@
       "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c8/Am%C3%A9rica_TV_%28Nuevo_logo_Junio_2020%29.png/500px-Am%C3%A9rica_TV_%28Nuevo_logo_Junio_2020%29.png",
       "fuentes": [
         {
+          "tipo": "web",
+          "url": "https://vmf.edge-apps.net/embed/live.php?streamname=americahls-100056&autoplay=true",
+          "headers": {
+            "Referer": "https://www.americatv.com.ar/"
+          },
+          "selector": "body",
+          "prioridad": 1,
+          "notas": "Reproductor oficial de americatv.com.ar/vivo; sin Referer del sitio muestra 'no disponible'"
+        },
+        {
           "tipo": "youtube",
           "canalId": "UC6NVDkuzY2exMOVFw4i9oHw",
-          "prioridad": 1,
-          "notas": "@americaenvivo (13/11: el HLS daba 403)"
+          "prioridad": 2,
+          "notas": "@americaenvivo: fuera del noticiero muestra una placa fija"
         },
         {
           "tipo": "youtube-app",
           "canalId": "UC6NVDkuzY2exMOVFw4i9oHw",
-          "prioridad": 2
+          "prioridad": 3
         }
       ]
     },
