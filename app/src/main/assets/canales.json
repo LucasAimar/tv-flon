@@ -4,6 +4,7 @@
   "categorias": [
     "Aire",
     "Noticias",
+    "Streaming",
     "Córdoba",
     "Deportes",
     "Otros",
@@ -81,17 +82,17 @@
       "nombre": "América TV",
       "categoria": "Aire",
       "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c8/Am%C3%A9rica_TV_%28Nuevo_logo_Junio_2020%29.png/500px-Am%C3%A9rica_TV_%28Nuevo_logo_Junio_2020%29.png",
-      "notas": "El HLS falla en los TV y americatv.com.ar/vivo no tiene reproductor libre; pendiente",
       "fuentes": [
         {
-          "tipo": "hls",
-          "url": "https://prepublish.f.qaotic.net/a07/americahls-100056/playlist_720p.m3u8",
+          "tipo": "youtube",
+          "canalId": "UC6NVDkuzY2exMOVFw4i9oHw",
           "prioridad": 1,
-          "headers": {
-            "Referer": "https://www.americatv.com.ar/",
-            "Origin": "https://www.americatv.com.ar"
-          },
-          "notas": "Daba HTTP 403 en los TV; prueba con Referer/Origin del sitio (13/11)"
+          "notas": "@americaenvivo (13/11: el HLS daba 403)"
+        },
+        {
+          "tipo": "youtube-app",
+          "canalId": "UC6NVDkuzY2exMOVFw4i9oHw",
+          "prioridad": 2
         }
       ]
     },
@@ -118,7 +119,7 @@
       "id": "canalsiete",
       "nombre": "TV Pública (Canal Siete)",
       "categoria": "Aire",
-      "logo": "https://i.imgur.com/NdQF9K9.png",
+      "logo": "https://yt3.googleusercontent.com/8p5xv5vXtatcci7BUJkLCGk0m_GaD9iQU2c9VcmvebOd1QJpr7A8yjqnEYzqGGk4_l6sCPb2-TE=s900-c-k-c0x00ffffff-no-rj",
       "fuentes": [
         {
           "tipo": "youtube",
@@ -279,6 +280,104 @@
           "tipo": "hls",
           "url": "https://stream-gtlc.telecentro.net.ar/hls/canal26hls/0/playlist.m3u8",
           "prioridad": 2
+        }
+      ]
+    },
+    {
+      "id": "luzu",
+      "nombre": "Luzu TV",
+      "categoria": "Streaming",
+      "logo": "https://yt3.googleusercontent.com/1-K9ikW6iP0nnfCVhcCnH2MpGSWVUee1DUL4Y8-8i_xwa-JKAv-9GEs1OKAl8ddpXMaFxOyB=s900-c-k-c0x00ffffff-no-rj",
+      "notas": "Canal de streaming: transmite en vivo por YouTube en su horario",
+      "fuentes": [
+        {
+          "tipo": "youtube",
+          "canalId": "UCTHaNTsP7hsVgBxARZTuajw",
+          "prioridad": 1
+        }
+      ]
+    },
+    {
+      "id": "olga",
+      "nombre": "OLGA",
+      "categoria": "Streaming",
+      "logo": "https://yt3.googleusercontent.com/D4kn5IQBl9r2r-B03hGiUKXtO1xq59lh5F1ARe5UnngDI3TH3LIW6liz2nidzy8NAhKW-wucig=s900-c-k-c0x00ffffff-no-rj",
+      "notas": "Canal de streaming: transmite en vivo por YouTube en su horario",
+      "fuentes": [
+        {
+          "tipo": "youtube",
+          "canalId": "UC7mJ2EDXFomeDIRFu5FtEbA",
+          "prioridad": 1
+        }
+      ]
+    },
+    {
+      "id": "blender",
+      "nombre": "Blender",
+      "categoria": "Streaming",
+      "logo": "https://yt3.googleusercontent.com/ytc/AIdro_mxi7Vkbm1kiZhsjXwVyoy7K7SaghLY0bjrqQLSxwA=s900-c-k-c0x00ffffff-no-rj",
+      "notas": "Canal de streaming: transmite en vivo por YouTube en su horario",
+      "fuentes": [
+        {
+          "tipo": "youtube",
+          "canalId": "UCJVLGh6FvWHRqq9E-1iPxlg",
+          "prioridad": 1
+        }
+      ]
+    },
+    {
+      "id": "gelatina",
+      "nombre": "Gelatina",
+      "categoria": "Streaming",
+      "logo": "https://yt3.googleusercontent.com/PGzEzh1eEwRjML1uhY2lgUzr8G4r5mKqQUMesXEYY8vcvKQkLhHeeQrFbi_nSA3hhGN_-t-1Gg=s900-c-k-c0x00ffffff-no-rj",
+      "notas": "Canal de streaming: transmite en vivo por YouTube en su horario",
+      "fuentes": [
+        {
+          "tipo": "youtube",
+          "canalId": "UCWSfXECGo1qK_H7SXRaUSMg",
+          "prioridad": 1
+        }
+      ]
+    },
+    {
+      "id": "vorterix",
+      "nombre": "Vorterix",
+      "categoria": "Streaming",
+      "logo": "https://yt3.googleusercontent.com/MLwjpG_fQdT6e-8_CNsqcOSKghc58Q_xGoZMn5lp37fGCUUqh3PoW5L3-XUB093Iv9Ozt4C9NgU=s900-c-k-c0x00ffffff-no-rj",
+      "notas": "Canal de streaming: transmite en vivo por YouTube en su horario",
+      "fuentes": [
+        {
+          "tipo": "youtube",
+          "canalId": "UCvCTWHCbBC0b9UIeLeNs8ug",
+          "prioridad": 1
+        }
+      ]
+    },
+    {
+      "id": "bondi",
+      "nombre": "Bondi Live",
+      "categoria": "Streaming",
+      "logo": "https://yt3.googleusercontent.com/lcFQGgvv2BJjvPdPh997RzbkCVkQyWvm49dP95bfzh9cAKFmeVgCGvu_q9NFPl12upBMm9qcKmc=s900-c-k-c0x00ffffff-no-rj",
+      "notas": "Canal de streaming: transmite en vivo por YouTube en su horario",
+      "fuentes": [
+        {
+          "tipo": "youtube",
+          "canalId": "UCnZidingmuqNkaT9Wm64Xxg",
+          "prioridad": 1
+        }
+      ]
+    },
+    {
+      "id": "carajo",
+      "nombre": "Carajo",
+      "categoria": "Streaming",
+      "logo": "https://yt3.googleusercontent.com/GjtA4xpFcGiFO77iLqqz2wGEBdqJ3fC6BVy4hW3bPYSq0EUhrVQJti1QIpdAcDmPyeMxvFPfIQ=s900-c-k-c0x00ffffff-no-rj",
+      "notas": "Canal de streaming: transmite en vivo por YouTube en su horario",
+      "fuentes": [
+        {
+          "tipo": "youtube",
+          "canalId": "UC4mdhKZXjrKoq5aVG6juHEg",
+          "prioridad": 1
         }
       ]
     },

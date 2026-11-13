@@ -61,8 +61,10 @@ fun ReproductorYouTube(fuente: Fuente, onError: (String) -> Unit) {
     var url by remember { mutableStateOf<String?>(null) }
     LaunchedEffect(fuente.canalId) {
         val vid = videoEnVivo(fuente.canalId.orEmpty())
-        url = if (vid != null) "https://www.youtube.com/embed/$vid?$PARAMS"
-        else "https://www.youtube.com/embed/live_stream?channel=${fuente.canalId}&$PARAMS"
+        // Sin video en vivo (típico de los canales de streaming fuera de horario):
+        // se avisa en lugar de abrir un reproductor que va a fallar.
+        if (vid == null) onErrorActual.value("el canal no está en vivo ahora")
+        else url = "https://www.youtube.com/embed/$vid?$PARAMS"
     }
     LaunchedEffect(Unit) { delay(15_000); mostrarDiagnostico = false }
 

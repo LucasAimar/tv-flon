@@ -19,7 +19,7 @@ android {
         // Se suma 100 para que siempre sea mayor que las versiones manuales anteriores (1 a 5).
         val build = System.getenv("GITHUB_RUN_NUMBER")?.toIntOrNull() ?: 0
         versionCode = 100 + build
-        versionName = "0.7.0 (build $build)"
+        versionName = "0.8.0 (build $build)"
         buildConfigField("int", "BUILD", "$build")
         buildConfigField("String", "REPO", "\"LucasAimar/tv-flon\"")
 

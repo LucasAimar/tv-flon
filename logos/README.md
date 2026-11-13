@@ -39,6 +39,13 @@ con el nombre correcto reemplaza al logo que haya, sin tocar el JSON ni recompil
 | `lnmas.png` | LN+ |
 | `cronica.png` | Crónica TV |
 | `canal26.png` | Canal 26 |
+| `luzu.png` | Luzu TV |
+| `olga.png` | OLGA |
+| `blender.png` | Blender |
+| `gelatina.png` | Gelatina |
+| `vorterix.png` | Vorterix |
+| `bondi.png` | Bondi Live |
+| `carajo.png` | Carajo |
 | `canal10cba.png` | Canal 10 Córdoba |
 | `eldoce.png` | El Doce |
 | `uniteve.png` | Uniteve |
