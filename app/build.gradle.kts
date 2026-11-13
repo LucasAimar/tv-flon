@@ -32,11 +32,27 @@ android {
         )
     }
 
+    // Clave de firma FIJA. Android solo acepta una actualización si está firmada con la
+    // misma clave que la versión instalada. En GitHub Actions el archivo flon.jks se arma
+    // desde el secreto KEYSTORE_BASE64 (ver .github/workflows/build.yml).
+    // Sin ese archivo (por ej. compilando en otra PC) se usa la clave de debug.
+    val claveFija = file("flon.jks")
+    signingConfigs {
+        create("flon") {
+            storeFile = claveFija
+            storePassword = System.getenv("KEYSTORE_PASSWORD")
+            keyAlias = "tvflon"
+            keyPassword = System.getenv("KEYSTORE_PASSWORD")
+        }
+    }
+
     buildTypes {
+        debug {
+            if (claveFija.exists()) signingConfig = signingConfigs.getByName("flon")
+        }
         release {
             isMinifyEnabled = false
-            // Para uso personal alcanza con firmar el release con la clave de debug.
-            signingConfig = signingConfigs.getByName("debug")
+            signingConfig = signingConfigs.getByName(if (claveFija.exists()) "flon" else "debug")
         }
     }
 
