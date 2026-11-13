@@ -15,8 +15,6 @@ con el nombre correcto reemplaza al logo que haya, sin tocar el JSON ni recompil
 ## Sin ningún logo todavía
 | Archivo | Canal | Categoría |
 |---|---|---|
-| `3564.png` | 3564 Stream TV | Córdoba |
-| `cadena3.png` | Cadena 3 | Radios |
 | `lapopu.png` | La Popu | Radios |
 | `nacionalcba.png` | Radio Nacional Córdoba | Radios |
 | `nacional.png` | Radio Nacional AM 870 | Radios |

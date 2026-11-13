@@ -3,6 +3,12 @@ name: Compilar APK
 on:
   push:
     branches: [main]
+    # Logos, lista de canales y textos los lee la app en vivo desde el repo:
+    # no hace falta compilar (ni ofrecer una "actualización") cuando solo cambian esos.
+    paths-ignore:
+      - 'logos/**'
+      - 'app/src/main/assets/canales.json'
+      - '**.md'
   workflow_dispatch:
 
 permissions:
