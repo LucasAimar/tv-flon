@@ -24,11 +24,15 @@ data class Canal(
     val fuentesOrdenadas: List<Fuente> get() = fuentes.sortedBy { it.prioridad }
 
     /**
-     * Logo a mostrar: el del JSON o, si no tiene, logos/<id>.png en el repo de GitHub.
-     * Así alcanza con subir el archivo con el nombre correcto, sin tocar canales.json.
+     * Dónde buscar el logo, en orden:
+     * 1. logos/<id>.png en el repo de GitHub (lo que Lucas sube manda sobre todo lo demás);
+     * 2. la dirección del campo `logo` del JSON, si la hay.
      */
-    val logoUrl: String
-        get() = logo ?: "https://raw.githubusercontent.com/${ar.flon.tv.BuildConfig.REPO}/main/logos/$id.png"
+    val logosCandidatos: List<String>
+        get() = listOfNotNull(
+            "https://raw.githubusercontent.com/${ar.flon.tv.BuildConfig.REPO}/main/logos/$id.png",
+            logo,
+        )
 
     /** Radio: está en la categoría Radios o solo tiene fuentes de audio. */
     val esRadio: Boolean

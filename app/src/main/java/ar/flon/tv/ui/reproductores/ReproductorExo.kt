@@ -43,6 +43,7 @@ import ar.flon.tv.data.Canal
 import ar.flon.tv.data.Fuente
 import ar.flon.tv.data.Http
 import ar.flon.tv.data.resolverUrl
+import ar.flon.tv.ui.LogoCanal
 import kotlinx.coroutines.delay
 
 /**
@@ -152,7 +153,7 @@ fun ReproductorExo(fuente: Fuente, soloAudio: Boolean, canal: Canal, onError: (S
         if (soloAudio) {
             // Radio: logo grande sobre fondo claro (o un ícono si no hay logo) y el nombre.
             Column(Modifier.align(Alignment.Center), horizontalAlignment = Alignment.CenterHorizontally) {
-                var logoFallo by remember(canal.logoUrl) { mutableStateOf(false) }
+                var logoFallo by remember(canal.id) { mutableStateOf(false) }
                 if (!logoFallo) {
                     Box(
                         Modifier
@@ -161,12 +162,10 @@ fun ReproductorExo(fuente: Fuente, soloAudio: Boolean, canal: Canal, onError: (S
                             .padding(24.dp),
                         contentAlignment = Alignment.Center,
                     ) {
-                        AsyncImage(
-                            model = canal.logoUrl,
-                            contentDescription = canal.nombre,
-                            contentScale = ContentScale.Fit,
-                            onError = { logoFallo = true },
+                        LogoCanal(
+                            canal = canal,
                             modifier = Modifier.fillMaxSize(),
+                            onSinLogo = { logoFallo = true },
                         )
                     }
                 } else {

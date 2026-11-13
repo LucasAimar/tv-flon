@@ -45,7 +45,7 @@ fun TarjetaCanal(
     onClick: () -> Unit,
     onLongClick: (() -> Unit)? = null,
 ) {
-    var logoFallo by remember(canal.logoUrl) { mutableStateOf(false) }
+    var logoFallo by remember(canal.id) { mutableStateOf(false) }
     val conLogo = !logoFallo
     val acento = if (canal.esRadio) Color(0xFFFFB547) else Color(0xFF7FB2FF)
 
@@ -75,12 +75,10 @@ fun TarjetaCanal(
                             .padding(if (compacta) 6.dp else 10.dp),
                         contentAlignment = Alignment.Center,
                     ) {
-                        AsyncImage(
-                            model = canal.logoUrl,
-                            contentDescription = canal.nombre,
-                            contentScale = ContentScale.Fit,
-                            onError = { logoFallo = true },
+                        LogoCanal(
+                            canal = canal,
                             modifier = Modifier.fillMaxSize(),
+                            onSinLogo = { logoFallo = true },
                         )
                     }
                     Text(

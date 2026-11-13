@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "verificado": "2026-11-12",
+  "verificado": "2026-11-13",
   "categorias": [
     "Aire",
     "Noticias",
@@ -449,11 +449,6 @@
           "tipo": "audio",
           "url": "https://liveradio.mediainbox.net/radio3.mp3",
           "prioridad": 1
-        },
-        {
-          "tipo": "audio",
-          "url": "https://playerservices.streamtheworld.com/api/livestream-redirect/radio3.mp3",
-          "prioridad": 2
         }
       ]
     },
@@ -470,20 +465,6 @@
       ]
     },
     {
-      "id": "mitrecba",
-      "nombre": "Radio Mitre Córdoba",
-      "categoria": "Radios",
-      "logo": "https://i.imgur.com/uvck4Vj.png",
-      "fuentes": [
-        {
-          "tipo": "audio",
-          "url": "https://playerservices.streamtheworld.com/api/livestream-redirect/AM810_56AAC.aac",
-          "prioridad": 1,
-          "notas": "StreamTheWorld: se corta a los 2 s en los TV (12/11)"
-        }
-      ]
-    },
-    {
       "id": "mitre",
       "nombre": "Radio Mitre",
       "categoria": "Radios",
@@ -493,11 +474,6 @@
           "tipo": "youtube",
           "canalId": "UCYvINPByAdCcpA0sWrF3I_w",
           "prioridad": 1
-        },
-        {
-          "tipo": "audio",
-          "url": "https://playerservices.streamtheworld.com/api/livestream-redirect/AM790_56AAC_SC",
-          "prioridad": 2
         }
       ]
     },
@@ -570,11 +546,6 @@
           "tipo": "youtube",
           "canalId": "UCLAj5TzCrNbqe3LosSKHLcQ",
           "prioridad": 1
-        },
-        {
-          "tipo": "audio",
-          "url": "https://playerservices.streamtheworld.com/api/livestream-redirect/RIVADAVIA.mp3",
-          "prioridad": 2
         }
       ]
     },
@@ -619,38 +590,6 @@
           "tipo": "youtube",
           "canalId": "UC2zO2jZCDplwm8SVsXUcxCQ",
           "prioridad": 2
-        },
-        {
-          "tipo": "audio",
-          "url": "https://playerservices.streamtheworld.com/api/livestream-redirect/FM999_56.mp3",
-          "prioridad": 3
-        }
-      ]
-    },
-    {
-      "id": "aspen",
-      "nombre": "Aspen 102.3",
-      "categoria": "Radios",
-      "fuentes": [
-        {
-          "tipo": "audio",
-          "url": "https://playerservices.streamtheworld.com/api/livestream-redirect/ASPEN.mp3",
-          "prioridad": 1,
-          "notas": "StreamTheWorld: se corta a los 2 s en los TV (12/11)"
-        }
-      ]
-    },
-    {
-      "id": "metro",
-      "nombre": "Metro 95.1",
-      "categoria": "Radios",
-      "logo": "https://i.imgur.com/D4nRp62.png",
-      "fuentes": [
-        {
-          "tipo": "audio",
-          "url": "https://playerservices.streamtheworld.com/api/livestream-redirect/METRO.mp3",
-          "prioridad": 1,
-          "notas": "StreamTheWorld: se corta a los 2 s en los TV (12/11)"
         }
       ]
     },
@@ -664,24 +603,6 @@
           "tipo": "youtube",
           "canalId": "UCAlQ5f7mhnkfM6jjXeJDw7g",
           "prioridad": 1
-        },
-        {
-          "tipo": "audio",
-          "url": "https://playerservices.streamtheworld.com/api/livestream-redirect/ROCKANDPOP.mp3",
-          "prioridad": 2
-        }
-      ]
-    },
-    {
-      "id": "cosquinrock",
-      "nombre": "Cosquín Rock 95.5",
-      "categoria": "Radios",
-      "fuentes": [
-        {
-          "tipo": "audio",
-          "url": "https://playerservices.streamtheworld.com/api/livestream-redirect/cosquinrock.mp3",
-          "prioridad": 1,
-          "notas": "StreamTheWorld: se corta a los 2 s en los TV (12/11)"
         }
       ]
     },
