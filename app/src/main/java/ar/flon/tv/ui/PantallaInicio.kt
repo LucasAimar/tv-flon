@@ -36,10 +36,14 @@ import androidx.tv.material3.TabRow
 import androidx.tv.material3.Text
 import ar.flon.tv.data.Canal
 import ar.flon.tv.data.ListaCanales
+import ar.flon.tv.data.ordenados
 import coil.compose.AsyncImage
 import kotlinx.coroutines.delay
 
 private const val FAVORITOS = "★ Favoritos"
+
+/** Pestaña general: todos los canales de TV (sin las radios). La app arranca acá. */
+const val CATEGORIA_TODOS = "Todos"
 
 /**
  * Pestañas de categorías arriba (el foco cambia la categoría) y grilla de canales abajo.
@@ -59,6 +63,7 @@ fun PantallaInicio(
 ) {
     val categorias = remember(lista, favoritos.isEmpty()) {
         buildList {
+            add(CATEGORIA_TODOS)
             if (favoritos.isNotEmpty()) add(FAVORITOS)
             addAll(lista.categorias.filter { c -> lista.canales.any { it.categoria == c } })
         }
@@ -68,8 +73,11 @@ fun PantallaInicio(
     val categoria = categorias.getOrNull(seleccion)
 
     val canales = remember(categoria, lista, favoritos) {
-        if (categoria == FAVORITOS) lista.canales.filter { it.id in favoritos }
-        else lista.canales.filter { it.categoria == categoria }
+        when (categoria) {
+            CATEGORIA_TODOS -> lista.ordenados { !it.esRadio }
+            FAVORITOS -> lista.canales.filter { it.id in favoritos }
+            else -> lista.canales.filter { it.categoria == categoria }
+        }
     }
 
     // Al entrar, el foco va al canal que se estaba viendo (o al primero de la grilla).

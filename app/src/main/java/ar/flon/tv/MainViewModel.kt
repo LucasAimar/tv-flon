@@ -114,10 +114,8 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
             val l = repo.cargar()
             _lista.value = l
             // Como un televisor: arranca en el último canal visto.
-            prefs.ultimoCanal()?.let { id -> l.canales.find { it.id == id } }?.let {
-                _categoria.value = it.categoria
-                abrir(it)
-            }
+            // La grilla queda en la pestaña "Todos" (categoría null = primera pestaña).
+            prefs.ultimoCanal()?.let { id -> l.canales.find { it.id == id } }?.let { abrir(it) }
         }
     }
 

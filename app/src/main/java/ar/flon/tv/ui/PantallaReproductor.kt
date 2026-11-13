@@ -93,7 +93,12 @@ fun PantallaReproductor(
 
         // Fila de cambio rápido (flecha abajo), en canales y radios.
         if (vecinos.size > 1) {
-            FilaCambio(actual = canal, canales = vecinos, titulo = canal.categoria, onCambiar = onCambiar)
+            FilaCambio(
+                actual = canal,
+                canales = vecinos,
+                titulo = if (canal.esRadio) "Radios" else "Todos los canales",
+                onCambiar = onCambiar,
+            )
         }
     }
 }

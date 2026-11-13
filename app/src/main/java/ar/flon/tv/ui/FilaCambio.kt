@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
@@ -117,18 +118,29 @@ fun FilaCambio(
                     horizontalArrangement = Arrangement.spacedBy(16.dp),
                 ) {
                     itemsIndexed(canales, key = { _, c -> c.id }) { i, c ->
-                        TarjetaCanal(
-                            canal = c,
-                            activo = c.id == actual.id,
-                            compacta = true,
-                            modifier = Modifier
-                                .width(200.dp)
-                                .then(if (i == indiceActual) Modifier.focusRequester(foco) else Modifier),
-                            onClick = {
-                                ultimaTecla = SystemClock.elapsedRealtime()
-                                if (c.id != actual.id) onCambiar(c)
-                            },
-                        )
+                        // Nombre de la categoría sobre el primer canal de cada grupo.
+                        val nuevaCategoria = i == 0 || canales[i - 1].categoria != c.categoria
+                        Column {
+                            Text(
+                                if (nuevaCategoria) c.categoria else "",
+                                color = Color(0xFF7FB2FF),
+                                style = MaterialTheme.typography.labelMedium,
+                                maxLines = 1,
+                                modifier = Modifier.height(20.dp).padding(start = 4.dp),
+                            )
+                            TarjetaCanal(
+                                canal = c,
+                                activo = c.id == actual.id,
+                                compacta = true,
+                                modifier = Modifier
+                                    .width(200.dp)
+                                    .then(if (i == indiceActual) Modifier.focusRequester(foco) else Modifier),
+                                onClick = {
+                                    ultimaTecla = SystemClock.elapsedRealtime()
+                                    if (c.id != actual.id) onCambiar(c)
+                                },
+                            )
+                        }
                     }
                 }
             }

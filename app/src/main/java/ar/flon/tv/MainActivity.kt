@@ -26,6 +26,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.tv.material3.MaterialTheme
 import androidx.tv.material3.Text
 import androidx.tv.material3.darkColorScheme
+import ar.flon.tv.data.ordenados
 import ar.flon.tv.ui.BotonMenu
 import ar.flon.tv.ui.PanelMenu
 import ar.flon.tv.ui.InterceptorTeclas
@@ -100,7 +101,9 @@ private fun App(vm: MainViewModel, onPantallaEncendida: (Boolean) -> Unit) {
             c != null -> PantallaReproductor(
                 canal = c,
                 onVolver = vm::cerrar,
-                vecinos = l.canales.filter { it.categoria == c.categoria },
+                // Fila de cambio rápido: en un canal, TODOS los canales de TV (de todas las
+                // categorías, sin radios); en una radio, todas las radios.
+                vecinos = l.ordenados { it.esRadio == c.esRadio },
                 onCambiar = vm::abrir,
                 ajustesYoutube = ajustesYoutube,
             )

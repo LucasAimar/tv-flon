@@ -12,6 +12,10 @@ data class ListaCanales(
     val canales: List<Canal> = emptyList(),
 )
 
+/** Canales ordenados según el orden de las categorías de la lista (orden estable). */
+fun ListaCanales.ordenados(filtro: (Canal) -> Boolean = { true }): List<Canal> =
+    canales.filter(filtro).sortedBy { c -> categorias.indexOf(c.categoria).let { if (it < 0) Int.MAX_VALUE else it } }
+
 @Serializable
 data class Canal(
     val id: String,
