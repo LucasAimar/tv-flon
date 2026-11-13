@@ -59,10 +59,6 @@ con el nombre correcto reemplaza al logo que haya, sin tocar el JSON ni recompil
 | `clarosports.png` | Claro Sports FAST |
 | `fifaplus.png` | FIFA+ |
 | `redbulltv.png` | Red Bull TV |
-| `realmadridtv.png` | Real Madrid TV |
-| `barca24h.png` | Barça 24H |
-| `ufc.png` | UFC |
-| `plutopeleas.png` | Pluto TV Peleas |
 | `gourmetplato.png` | elGourmet: Plato del Día |
 | `gourmetdulce.png` | elGourmet: Dulce |
 | `tastemade.png` | Tastemade Food |

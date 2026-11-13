@@ -585,62 +585,6 @@
       ]
     },
     {
-      "id": "realmadridtv",
-      "nombre": "Real Madrid TV",
-      "categoria": "Deportes",
-      "logo": "https://images.pluto.tv/channels/67a3b45a21af380008133aa4/colorLogoPNG.png",
-      "notas": "Pluto TV (gratis, con publicidad)",
-      "fuentes": [
-        {
-          "tipo": "hls",
-          "url": "https://cfd-v4-service-channel-stitcher-use1-1.prd.pluto.tv/stitch/hls/channel/67a3b45a21af380008133aa4/master.m3u8?advertisingId=&appName=tv-flon&appVersion=1&architecture=&buildVersion=&clientTime=&deviceDNT=0&deviceId={dispositivo}&deviceMake=android&deviceModel=androidtv&deviceType=androidtv&deviceVersion=unknown&includeExtendedEvents=false&sid={sesion}&userId=",
-          "prioridad": 1
-        }
-      ]
-    },
-    {
-      "id": "barca24h",
-      "nombre": "Barça 24H",
-      "categoria": "Deportes",
-      "logo": "https://images.pluto.tv/channels/67a52c8397782f00081879aa/colorLogoPNG_1793619685355.png",
-      "notas": "Pluto TV (gratis, con publicidad)",
-      "fuentes": [
-        {
-          "tipo": "hls",
-          "url": "https://cfd-v4-service-channel-stitcher-use1-1.prd.pluto.tv/stitch/hls/channel/67a52c8397782f00081879aa/master.m3u8?advertisingId=&appName=tv-flon&appVersion=1&architecture=&buildVersion=&clientTime=&deviceDNT=0&deviceId={dispositivo}&deviceMake=android&deviceModel=androidtv&deviceType=androidtv&deviceVersion=unknown&includeExtendedEvents=false&sid={sesion}&userId=",
-          "prioridad": 1
-        }
-      ]
-    },
-    {
-      "id": "ufc",
-      "nombre": "UFC",
-      "categoria": "Deportes",
-      "logo": "https://images.pluto.tv/channels/67a52cd4ec91870008a62164/colorLogoPNG_1772478524925.png",
-      "notas": "Pluto TV (gratis, con publicidad)",
-      "fuentes": [
-        {
-          "tipo": "hls",
-          "url": "https://cfd-v4-service-channel-stitcher-use1-1.prd.pluto.tv/stitch/hls/channel/67a52cd4ec91870008a62164/master.m3u8?advertisingId=&appName=tv-flon&appVersion=1&architecture=&buildVersion=&clientTime=&deviceDNT=0&deviceId={dispositivo}&deviceMake=android&deviceModel=androidtv&deviceType=androidtv&deviceVersion=unknown&includeExtendedEvents=false&sid={sesion}&userId=",
-          "prioridad": 1
-        }
-      ]
-    },
-    {
-      "id": "plutopeleas",
-      "nombre": "Pluto TV Peleas",
-      "categoria": "Deportes",
-      "logo": "https://images.pluto.tv/channels/5e98b0447665f200078caded/colorLogoPNG.png",
-      "notas": "Pluto TV (gratis, con publicidad)",
-      "fuentes": [
-        {
-          "tipo": "hls",
-          "url": "https://cfd-v4-service-channel-stitcher-use1-1.prd.pluto.tv/stitch/hls/channel/5e98b0447665f200078caded/master.m3u8?advertisingId=&appName=tv-flon&appVersion=1&architecture=&buildVersion=&clientTime=&deviceDNT=0&deviceId={dispositivo}&deviceMake=android&deviceModel=androidtv&deviceType=androidtv&deviceVersion=unknown&includeExtendedEvents=false&sid={sesion}&userId=",
-          "prioridad": 1
-        }
-      ]
-    },
-    {
       "id": "gourmetplato",
       "nombre": "elGourmet: Plato del Día",
       "categoria": "Cocina",
