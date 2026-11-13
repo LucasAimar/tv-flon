@@ -8,11 +8,16 @@ import kotlinx.serialization.json.jsonObject
 import okhttp3.Request
 
 /**
- * Si la fuente tiene tokenUrl, pide el JSON y completa los marcadores {campo} de la url.
+ * Arma la URL final de una fuente:
+ * - {dispositivo}: identificador fijo de este aparato (lo piden servicios como Pluto TV);
+ * - {sesion}: identificador nuevo en cada reproducción;
+ * - si hay tokenUrl, pide el JSON y completa los marcadores {campo} con sus valores.
  * Devuelve la URL lista, o lanza una excepción con el motivo (que se muestra en pantalla).
  */
 suspend fun resolverUrl(fuente: Fuente): String = withContext(Dispatchers.IO) {
-    val base = fuente.url ?: error("sin URL")
+    val base = (fuente.url ?: error("sin URL"))
+        .replace("{dispositivo}", Identificadores.dispositivo)
+        .replace("{sesion}", java.util.UUID.randomUUID().toString())
     val tokenUrl = fuente.tokenUrl ?: return@withContext base
     val req = Request.Builder().url(tokenUrl).apply {
         // Mismos Referer/Origin que usa la página oficial.
