@@ -491,25 +491,6 @@
         }
       ]
     },
-	{
-	  "id": "dsports",
-	  "nombre": "DSports",
-	  "categoria": "Deportes",
-	  "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8a/DSports.svg/512px-DSports.svg.png",
-	  "fuentes": [
-		{
-		  "tipo": "dash",
-		  "url": "https://a49live-pv-ta-amazon.akamaized.net/pdx-nitro/live/clients/dash/enc/my5zrwcz67/out/v1/f5e6298f64c34c62a4f69e6667cc23af/cenc.mpd",
-		  "headers": {
-			"Referer": "https://streamtp99a.sbs/",
-			"Origin": "https://streamtp99a.sbs",
-			"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/157.0.0.0 Safari/537.36"
-		  },
-		  "prioridad": 1,
-		  "notas": "DASH cifrado (cenc). Requiere DRM Widevine/PlayReady y/o token Akamai en segmentos. Puede caducar."
-		}
-	  ]
-	},
     {
       "id": "tyc",
       "nombre": "TyC Sports",
