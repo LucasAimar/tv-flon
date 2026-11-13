@@ -6,6 +6,8 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class ListaCanales(
     val version: Int = 1,
+    /** Fecha en que se verificaron las fuentes (se muestra en el menú). */
+    val verificado: String? = null,
     val categorias: List<String> = emptyList(),
     val canales: List<Canal> = emptyList(),
 )
@@ -20,6 +22,13 @@ data class Canal(
 ) {
     /** Fuentes en el orden en que se prueban. */
     val fuentesOrdenadas: List<Fuente> get() = fuentes.sortedBy { it.prioridad }
+
+    /**
+     * Logo a mostrar: el del JSON o, si no tiene, logos/<id>.png en el repo de GitHub.
+     * Así alcanza con subir el archivo con el nombre correcto, sin tocar canales.json.
+     */
+    val logoUrl: String
+        get() = logo ?: "https://raw.githubusercontent.com/${ar.flon.tv.BuildConfig.REPO}/main/logos/$id.png"
 
     /** Radio: está en la categoría Radios o solo tiene fuentes de audio. */
     val esRadio: Boolean

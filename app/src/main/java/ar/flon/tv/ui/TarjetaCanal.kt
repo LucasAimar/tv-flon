@@ -45,8 +45,8 @@ fun TarjetaCanal(
     onClick: () -> Unit,
     onLongClick: (() -> Unit)? = null,
 ) {
-    var logoFallo by remember(canal.logo) { mutableStateOf(false) }
-    val conLogo = canal.logo != null && !logoFallo
+    var logoFallo by remember(canal.logoUrl) { mutableStateOf(false) }
+    val conLogo = !logoFallo
     val acento = if (canal.esRadio) Color(0xFFFFB547) else Color(0xFF7FB2FF)
 
     Card(
@@ -76,7 +76,7 @@ fun TarjetaCanal(
                         contentAlignment = Alignment.Center,
                     ) {
                         AsyncImage(
-                            model = canal.logo,
+                            model = canal.logoUrl,
                             contentDescription = canal.nombre,
                             contentScale = ContentScale.Fit,
                             onError = { logoFallo = true },

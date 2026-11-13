@@ -10,17 +10,24 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.tv.material3.MaterialTheme
 import androidx.tv.material3.Text
 import androidx.tv.material3.darkColorScheme
-import ar.flon.tv.ui.BotonActualizar
+import ar.flon.tv.ui.BotonMenu
+import ar.flon.tv.ui.PanelMenu
 import ar.flon.tv.ui.InterceptorTeclas
 import ar.flon.tv.ui.LocalTeclas
 import ar.flon.tv.ui.PantallaInicio
@@ -65,6 +72,14 @@ private fun App(vm: MainViewModel, onPantallaEncendida: (Boolean) -> Unit) {
     val categoria by vm.categoria.collectAsStateWithLifecycle()
     val ultimo by vm.ultimoCanal.collectAsStateWithLifecycle()
     val actualizacion by vm.actualizacion.collectAsStateWithLifecycle()
+    var menuAbierto by remember { mutableStateOf(false) }
+    var menuUsado by remember { mutableStateOf(false) }
+    val focoMenu = remember { FocusRequester() }
+    // Al cerrar el menú, el foco vuelve al botón ☰.
+    LaunchedEffect(menuAbierto) {
+        if (menuAbierto) menuUsado = true
+        else if (menuUsado) runCatching { focoMenu.requestFocus() }
+    }
 
     val reproduciendo = canal != null
     DisposableEffect(reproduciendo) {
@@ -95,8 +110,24 @@ private fun App(vm: MainViewModel, onPantallaEncendida: (Boolean) -> Unit) {
                 onCategoria = vm::elegirCategoria,
                 onAbrir = vm::abrir,
                 onFavorito = vm::alternarFavorito,
-                // Versión instalada + botón para actualizar desde GitHub.
-                extraArriba = { BotonActualizar(actualizacion, onClick = vm::accionActualizacion) },
+                // Menú ☰ (actualizar, versión y, a futuro, más opciones).
+                extraArriba = {
+                    BotonMenu(
+                        hayNovedad = actualizacion is EstadoActualizacion.Disponible,
+                        onClick = { menuAbierto = true },
+                        modifier = Modifier.focusRequester(focoMenu),
+                    )
+                },
+            )
+        }
+        if (c == null && l != null) {
+            PanelMenu(
+                abierto = menuAbierto,
+                onCerrar = { menuAbierto = false },
+                actualizacion = actualizacion,
+                onActualizar = vm::accionActualizacion,
+                totalCanales = l.canales.size,
+                listaVerificada = l.verificado,
             )
         }
     }

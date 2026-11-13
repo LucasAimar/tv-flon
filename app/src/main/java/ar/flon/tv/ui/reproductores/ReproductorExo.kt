@@ -21,6 +21,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -151,7 +152,8 @@ fun ReproductorExo(fuente: Fuente, soloAudio: Boolean, canal: Canal, onError: (S
         if (soloAudio) {
             // Radio: logo grande sobre fondo claro (o un ícono si no hay logo) y el nombre.
             Column(Modifier.align(Alignment.Center), horizontalAlignment = Alignment.CenterHorizontally) {
-                if (canal.logo != null) {
+                var logoFallo by remember(canal.logoUrl) { mutableStateOf(false) }
+                if (!logoFallo) {
                     Box(
                         Modifier
                             .size(width = 420.dp, height = 240.dp)
@@ -160,9 +162,10 @@ fun ReproductorExo(fuente: Fuente, soloAudio: Boolean, canal: Canal, onError: (S
                         contentAlignment = Alignment.Center,
                     ) {
                         AsyncImage(
-                            model = canal.logo,
+                            model = canal.logoUrl,
                             contentDescription = canal.nombre,
                             contentScale = ContentScale.Fit,
+                            onError = { logoFallo = true },
                             modifier = Modifier.fillMaxSize(),
                         )
                     }

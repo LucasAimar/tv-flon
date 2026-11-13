@@ -41,6 +41,27 @@ app/src/main/
 
 Por línea de comandos: `./gradlew assembleDebug` (necesita el Android SDK instalado y `ANDROID_HOME` configurado).
 
+## Compilar en GitHub (sin instalar nada)
+
+Cada push a `main` dispara `.github/workflows/build.yml`, que compila el APK y:
+- lo deja como artefacto en la pestaña **Actions**;
+- lo publica como **release**. La URL fija del último APK es
+  `https://github.com/LucasAimar/tv-flon/releases/latest/download/tv-flon.apk`.
+
+## Actualizar desde la app
+
+Arriba a la derecha de la pantalla de inicio está la versión instalada y el botón
+**Buscar actualización**. Al abrirse, la app ya se fija sola si hay un build nuevo en las
+releases de GitHub; si lo hay, el botón dice **Actualizar a build N**: lo baja y abre el
+instalador del sistema (Android siempre pide confirmar con un clic).
+
+La primera vez hay que permitir que TV Floñ instale apps:
+- **Android TV:** el botón abre la pantalla del permiso; activalo y volvé.
+- **Fire TV:** *Configuración → Mi Fire TV → Opciones para desarrolladores →
+  Instalar apps desconocidas → TV Floñ: activado*.
+
+El número de versión sale del número de compilación de GitHub Actions (`versionCode = 100 + run_number`).
+
 ## Instalar
 
 **Android TV**

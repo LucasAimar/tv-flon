@@ -87,8 +87,8 @@ fun PantallaReproductor(
             CartelCanal(canal, indice, fuentes.size, fuente.tipo)
         }
 
-        // Fila de cambio rápido (flecha abajo). Por ahora solo en las radios.
-        if (canal.esRadio && vecinos.size > 1) {
+        // Fila de cambio rápido (flecha abajo), en canales y radios.
+        if (vecinos.size > 1) {
             FilaCambio(actual = canal, canales = vecinos, titulo = canal.categoria, onCambiar = onCambiar)
         }
     }
@@ -112,6 +112,7 @@ private fun CartelCanal(canal: Canal, indice: Int, total: Int, tipo: String) {
                 if (total > 1 || indice > 0) {
                     Text("Fuente ${indice + 1} de $total · $tipo", color = Color.LightGray)
                 }
+                Text("↓ para cambiar de canal", color = Color.Gray)
             }
         }
     }
