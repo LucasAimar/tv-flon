@@ -8,18 +8,17 @@ import androidx.activity.viewModels
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.tv.material3.MaterialTheme
 import androidx.tv.material3.Text
 import androidx.tv.material3.darkColorScheme
+import ar.flon.tv.ui.BotonActualizar
 import ar.flon.tv.ui.PantallaInicio
 import ar.flon.tv.ui.PantallaReproductor
 
@@ -54,6 +53,7 @@ private fun App(vm: MainViewModel, onPantallaEncendida: (Boolean) -> Unit) {
     val favoritos by vm.favoritos.collectAsStateWithLifecycle()
     val categoria by vm.categoria.collectAsStateWithLifecycle()
     val ultimo by vm.ultimoCanal.collectAsStateWithLifecycle()
+    val actualizacion by vm.actualizacion.collectAsStateWithLifecycle()
 
     val reproduciendo = canal != null
     DisposableEffect(reproduciendo) {
@@ -71,24 +71,17 @@ private fun App(vm: MainViewModel, onPantallaEncendida: (Boolean) -> Unit) {
                 style = MaterialTheme.typography.headlineSmall,
             )
             c != null -> PantallaReproductor(canal = c, onVolver = vm::cerrar)
-            else -> {
-                PantallaInicio(
-                    lista = l,
-                    favoritos = favoritos,
-                    categoriaElegida = categoria,
-                    canalEnfocado = ultimo,
-                    onCategoria = vm::elegirCategoria,
-                    onAbrir = vm::abrir,
-                    onFavorito = vm::alternarFavorito,
-                )
-                // Versión instalada, en un rincón.
-                Text(
-                    "v${BuildConfig.VERSION_NAME}",
-                    modifier = Modifier.align(Alignment.BottomEnd).padding(16.dp),
-                    color = Color.Gray,
-                    style = MaterialTheme.typography.labelSmall,
-                )
-            }
+            else -> PantallaInicio(
+                lista = l,
+                favoritos = favoritos,
+                categoriaElegida = categoria,
+                canalEnfocado = ultimo,
+                onCategoria = vm::elegirCategoria,
+                onAbrir = vm::abrir,
+                onFavorito = vm::alternarFavorito,
+                // Versión instalada + botón para actualizar desde GitHub.
+                extraArriba = { BotonActualizar(actualizacion, onClick = vm::accionActualizacion) },
+            )
         }
     }
 }

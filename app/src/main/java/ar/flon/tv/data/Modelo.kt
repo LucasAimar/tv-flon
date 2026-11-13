@@ -21,8 +21,9 @@ data class Canal(
     /** Fuentes en el orden en que se prueban. */
     val fuentesOrdenadas: List<Fuente> get() = fuentes.sortedBy { it.prioridad }
 
-    /** Un canal es "radio" si su primera fuente es solo audio. */
-    val esRadio: Boolean get() = fuentesOrdenadas.firstOrNull()?.tipo == TipoFuente.AUDIO
+    /** Radio: está en la categoría Radios o solo tiene fuentes de audio. */
+    val esRadio: Boolean
+        get() = categoria == "Radios" || fuentes.all { it.tipo == TipoFuente.AUDIO }
 }
 
 @Serializable

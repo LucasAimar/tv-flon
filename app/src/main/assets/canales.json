@@ -451,7 +451,8 @@
         {
           "tipo": "audio",
           "url": "https://playerservices.streamtheworld.com/api/livestream-redirect/AM810_56AAC.aac",
-          "prioridad": 1
+          "prioridad": 1,
+          "notas": "StreamTheWorld: se corta a los 2 s en los TV (12/11)"
         }
       ]
     },
@@ -461,13 +462,13 @@
       "categoria": "Radios",
       "fuentes": [
         {
-          "tipo": "audio",
-          "url": "https://playerservices.streamtheworld.com/api/livestream-redirect/AM790_56AAC_SC",
+          "tipo": "youtube",
+          "canalId": "UCYvINPByAdCcpA0sWrF3I_w",
           "prioridad": 1
         },
         {
-          "tipo": "youtube",
-          "canalId": "UCYvINPByAdCcpA0sWrF3I_w",
+          "tipo": "audio",
+          "url": "https://playerservices.streamtheworld.com/api/livestream-redirect/AM790_56AAC_SC",
           "prioridad": 2
         }
       ]
@@ -538,9 +539,14 @@
       "categoria": "Radios",
       "fuentes": [
         {
+          "tipo": "youtube",
+          "canalId": "UCLAj5TzCrNbqe3LosSKHLcQ",
+          "prioridad": 1
+        },
+        {
           "tipo": "audio",
           "url": "https://playerservices.streamtheworld.com/api/livestream-redirect/RIVADAVIA.mp3",
-          "prioridad": 1
+          "prioridad": 2
         }
       ]
     },
@@ -574,15 +580,20 @@
       "categoria": "Radios",
       "fuentes": [
         {
-          "tipo": "audio",
-          "url": "https://playerservices.streamtheworld.com/api/livestream-redirect/FM999_56.mp3",
-          "prioridad": 1
-        },
-        {
           "tipo": "hls",
           "url": "https://mdstrm.com/live-stream-playlist/68b74fd1d6512526f1f7c75a.m3u8",
-          "prioridad": 2,
+          "prioridad": 1,
           "notas": "Versión con video"
+        },
+        {
+          "tipo": "youtube",
+          "canalId": "UC2zO2jZCDplwm8SVsXUcxCQ",
+          "prioridad": 2
+        },
+        {
+          "tipo": "audio",
+          "url": "https://playerservices.streamtheworld.com/api/livestream-redirect/FM999_56.mp3",
+          "prioridad": 3
         }
       ]
     },
@@ -594,7 +605,8 @@
         {
           "tipo": "audio",
           "url": "https://playerservices.streamtheworld.com/api/livestream-redirect/ASPEN.mp3",
-          "prioridad": 1
+          "prioridad": 1,
+          "notas": "StreamTheWorld: se corta a los 2 s en los TV (12/11)"
         }
       ]
     },
@@ -606,7 +618,8 @@
         {
           "tipo": "audio",
           "url": "https://playerservices.streamtheworld.com/api/livestream-redirect/METRO.mp3",
-          "prioridad": 1
+          "prioridad": 1,
+          "notas": "StreamTheWorld: se corta a los 2 s en los TV (12/11)"
         }
       ]
     },
@@ -616,9 +629,14 @@
       "categoria": "Radios",
       "fuentes": [
         {
+          "tipo": "youtube",
+          "canalId": "UCAlQ5f7mhnkfM6jjXeJDw7g",
+          "prioridad": 1
+        },
+        {
           "tipo": "audio",
           "url": "https://playerservices.streamtheworld.com/api/livestream-redirect/ROCKANDPOP.mp3",
-          "prioridad": 1
+          "prioridad": 2
         }
       ]
     },
@@ -630,7 +648,8 @@
         {
           "tipo": "audio",
           "url": "https://playerservices.streamtheworld.com/api/livestream-redirect/cosquinrock.mp3",
-          "prioridad": 1
+          "prioridad": 1,
+          "notas": "StreamTheWorld: se corta a los 2 s en los TV (12/11)"
         }
       ]
     },

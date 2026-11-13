@@ -14,8 +14,14 @@ android {
         // API 23 cubre Fire TV Stick viejos (Fire OS 6 = API 25) y cualquier Android TV actual.
         minSdk = 23
         targetSdk = 35
-        versionCode = 4
-        versionName = "0.3.1"
+        // El número de compilación de GitHub Actions define la versión. Así la app puede
+        // comparar contra la última release (tag build-N) y actualizarse sola.
+        // Se suma 100 para que siempre sea mayor que las versiones manuales anteriores (1 a 5).
+        val build = System.getenv("GITHUB_RUN_NUMBER")?.toIntOrNull() ?: 0
+        versionCode = 100 + build
+        versionName = "0.4.0 (build $build)"
+        buildConfigField("int", "BUILD", "$build")
+        buildConfigField("String", "REPO", "\"LucasAimar/tv-flon\"")
 
         // URL del canales.json remoto. Cambiala por la tuya (GitHub raw, tu servidor, etc.).
         // Si falla, la app usa la última copia descargada o la que viene dentro del APK.

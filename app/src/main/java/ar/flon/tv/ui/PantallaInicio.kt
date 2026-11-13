@@ -5,6 +5,9 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -51,6 +54,8 @@ fun PantallaInicio(
     onCategoria: (String) -> Unit,
     onAbrir: (Canal) -> Unit,
     onFavorito: (Canal) -> Unit,
+    /** Lo que va arriba a la derecha, al lado de las pestañas (botón de actualizar). */
+    extraArriba: @Composable () -> Unit = {},
 ) {
     val categorias = remember(lista, favoritos.isEmpty()) {
         buildList {
@@ -78,16 +83,20 @@ fun PantallaInicio(
     }
 
     Column(Modifier.fillMaxSize().padding(horizontal = 48.dp, vertical = 24.dp)) {
-        TabRow(selectedTabIndex = seleccion) {
-            categorias.forEachIndexed { i, nombre ->
-                Tab(selected = i == seleccion, onFocus = { onCategoria(nombre) }) {
-                    Text(
-                        nombre,
-                        modifier = Modifier.padding(horizontal = 16.dp, vertical = 6.dp),
-                        style = MaterialTheme.typography.titleMedium,
-                    )
+        Row(verticalAlignment = Alignment.Top) {
+            TabRow(selectedTabIndex = seleccion, modifier = Modifier.weight(1f)) {
+                categorias.forEachIndexed { i, nombre ->
+                    Tab(selected = i == seleccion, onFocus = { onCategoria(nombre) }) {
+                        Text(
+                            nombre,
+                            modifier = Modifier.padding(horizontal = 16.dp, vertical = 6.dp),
+                            style = MaterialTheme.typography.titleMedium,
+                        )
+                    }
                 }
             }
+            Spacer(Modifier.width(24.dp))
+            extraArriba()
         }
 
         LazyVerticalGrid(

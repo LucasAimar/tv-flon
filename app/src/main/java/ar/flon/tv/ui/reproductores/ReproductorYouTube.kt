@@ -29,6 +29,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.tv.material3.Text
 import ar.flon.tv.data.Fuente
+import ar.flon.tv.data.Http
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import okhttp3.Request
 import androidx.webkit.WebViewCompat
 import androidx.webkit.WebViewFeature
 import kotlinx.coroutines.delay
@@ -51,10 +55,24 @@ fun ReproductorYouTube(fuente: Fuente, onError: (String) -> Unit) {
     val onErrorActual = rememberUpdatedState(onError)
     var diagnostico by remember { mutableStateOf("Cargando YouTube…") }
     var mostrarDiagnostico by remember { mutableStateOf(true) }
-    val url = "https://www.youtube.com/embed/live_stream?channel=${fuente.canalId}" +
-        "&autoplay=1&mute=0&controls=0&rel=0&playsinline=1&iv_load_policy=3&enablejsapi=1"
-
+    // Primero se averigua qué video está transmitiendo el canal ahora (la página /live
+    // del canal lo indica) y se embebe ese video. El atajo "live_stream?channel=" da
+    // "El video no está disponible" en algunos canales (LN+, Canal 10, TV Pública).
+    var url by remember { mutableStateOf<String?>(null) }
+    LaunchedEffect(fuente.canalId) {
+        val vid = videoEnVivo(fuente.canalId.orEmpty())
+        url = if (vid != null) "https://www.youtube.com/embed/$vid?$PARAMS"
+        else "https://www.youtube.com/embed/live_stream?channel=${fuente.canalId}&$PARAMS"
+    }
     LaunchedEffect(Unit) { delay(15_000); mostrarDiagnostico = false }
+
+    val urlFinal = url
+    if (urlFinal == null) {
+        Box(Modifier.fillMaxSize()) {
+            Text("Buscando el vivo…", modifier = Modifier.align(Alignment.Center))
+        }
+        return
+    }
 
     Box(Modifier.fillMaxSize()) {
         AndroidView(
@@ -130,7 +148,7 @@ fun ReproductorYouTube(fuente: Fuente, onError: (String) -> Unit) {
                     }
 
                     // YouTube exige un Referer para los embeds (si falta: error 152/153).
-                    loadUrl(url, mapOf("Referer" to REFERER))
+                    loadUrl(urlFinal, mapOf("Referer" to REFERER))
                 }
                 contenedor.addView(
                     web,
@@ -165,6 +183,22 @@ fun ReproductorYouTube(fuente: Fuente, onError: (String) -> Unit) {
 }
 
 private const val REFERER = "https://ar.flon.tv/"
+private const val PARAMS = "autoplay=1&mute=0&controls=0&rel=0&playsinline=1&iv_load_policy=3&enablejsapi=1"
+
+/** ID del video que el canal está transmitiendo ahora, leído de su página /live. */
+private suspend fun videoEnVivo(canalId: String): String? = withContext(Dispatchers.IO) {
+    try {
+        val req = Request.Builder()
+            .url("https://www.youtube.com/channel/$canalId/live")
+            .header("Accept-Language", "es-AR,es;q=0.9")
+            .build()
+        val html = Http.cliente.newCall(req).execute().use { it.body?.string() } ?: return@withContext null
+        Regex("""<link rel="canonical" href="https://www\.youtube\.com/watch\?v=([\w-]{11})"""")
+            .find(html)?.groupValues?.get(1)
+    } catch (e: Exception) {
+        null
+    }
+}
 
 /**
  * Corre dentro del embed: cada 2 s revisa si hay error de YouTube, si el video avanza
@@ -174,24 +208,30 @@ private const val JS_VIGILAR = """
 (function(){
   if (window.__vigilando) return; window.__vigilando = true;
   var inicio = Date.now(), arranco = false;
-  var t = setInterval(function(){
-    var err = document.querySelector('.ytp-error, .ytp-error-content-wrap');
-    if (err && err.offsetParent !== null) {
-      clearInterval(t); Android.error((err.innerText || 'error').trim().slice(0,80)); return;
+  function visible(el){
+    if (!el) return false;
+    var cs = getComputedStyle(el), r = el.getBoundingClientRect();
+    return cs.display !== 'none' && cs.visibility !== 'hidden' && r.width > 0 && r.height > 0;
+  }
+  // Revisa todo el tiempo (un vivo puede caerse después de arrancar).
+  setInterval(function(){
+    var err = document.querySelector('.ytp-error');
+    var texto = (err && err.innerText || '').trim();
+    if (visible(err) || /no est\u00e1 disponible|unavailable|no disponible/i.test(texto)) {
+      Android.error((texto || 'video no disponible').split('\n')[0].slice(0,80)); return;
     }
     var v = document.querySelector('video');
     if (v) {
-      if (v.paused) { try { v.play(); } catch(e){} }
+      if (v.paused && !arranco) { try { v.play(); } catch(e){} }
       if (v.currentTime > 0) arranco = true;
-      Android.estado('Video ' + v.videoWidth + 'x' + v.videoHeight +
-                     (window.__h264 ? ' · H.264' : ' · códec libre') +
-                     (arranco ? ' · reproduciendo' : ' · cargando'));
-      if (arranco && v.videoWidth === 0 && v.currentTime > 15) {
-        clearInterval(t); Android.error('solo audio, sin video'); return;
+      if (Date.now() - inicio < 20000) {
+        Android.estado('Video ' + v.videoWidth + 'x' + v.videoHeight +
+                       (window.__h264 ? ' · H.264' : ' · códec libre') +
+                       (arranco ? ' · reproduciendo' : ' · cargando'));
       }
+      if (arranco && v.videoWidth === 0 && v.currentTime > 15) { Android.error('solo audio, sin video'); return; }
     }
-    if (!arranco && Date.now() - inicio > 30000) { clearInterval(t); Android.error('no arrancó'); }
-    if (arranco && v && v.videoWidth > 0 && Date.now() - inicio > 20000) clearInterval(t);
+    if (!arranco && Date.now() - inicio > 30000) Android.error('no arrancó');
   }, 2000);
 })();
 """

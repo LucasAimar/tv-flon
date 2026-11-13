@@ -3,7 +3,10 @@ package ar.flon.tv
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
+import ar.flon.tv.data.Actualizador
 import ar.flon.tv.data.Canal
+import ar.flon.tv.data.Version
+import java.io.File
 import ar.flon.tv.data.ListaCanales
 import ar.flon.tv.data.Preferencias
 import ar.flon.tv.data.RepositorioCanales
@@ -34,10 +37,71 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
     private val _ultimoCanal = MutableStateFlow<String?>(null)
     val ultimoCanal: StateFlow<String?> = _ultimoCanal.asStateFlow()
 
+    // ---- Actualización desde GitHub ----
+    private val actualizador = Actualizador(app)
+    private val _actualizacion = MutableStateFlow<EstadoActualizacion>(EstadoActualizacion.Nada)
+    val actualizacion: StateFlow<EstadoActualizacion> = _actualizacion.asStateFlow()
+    private var apkBajado: File? = null
+
+    /** Al abrir la app se busca en silencio; con el botón, se busca y se avisa el resultado. */
+    fun buscarActualizacion(silencioso: Boolean = false) {
+        if (_actualizacion.value is EstadoActualizacion.Descargando) return
+        viewModelScope.launch {
+            if (!silencioso) _actualizacion.value = EstadoActualizacion.Buscando
+            _actualizacion.value = try {
+                actualizador.buscar()?.let { EstadoActualizacion.Disponible(it) }
+                    ?: if (silencioso) EstadoActualizacion.Nada else EstadoActualizacion.AlDia
+            } catch (e: Exception) {
+                if (silencioso) EstadoActualizacion.Nada
+                else EstadoActualizacion.Error(e.message ?: "error")
+            }
+        }
+    }
+
+    /** Botón de la barra: según el estado busca, baja o instala. */
+    fun accionActualizacion() {
+        when (val e = _actualizacion.value) {
+            is EstadoActualizacion.Disponible -> descargarEInstalar(e.version)
+            is EstadoActualizacion.ListoParaInstalar, is EstadoActualizacion.FaltaPermiso -> instalar()
+            is EstadoActualizacion.Buscando, is EstadoActualizacion.Descargando -> Unit
+            else -> buscarActualizacion()
+        }
+    }
+
+    private fun descargarEInstalar(v: Version) {
+        viewModelScope.launch {
+            _actualizacion.value = EstadoActualizacion.Descargando(v.build, 0)
+            try {
+                apkBajado = actualizador.descargar(v) { pct ->
+                    _actualizacion.value = EstadoActualizacion.Descargando(v.build, pct)
+                }
+                _actualizacion.value = EstadoActualizacion.ListoParaInstalar(v.build)
+                instalar()
+            } catch (e: Exception) {
+                _actualizacion.value = EstadoActualizacion.Error(e.message ?: "error en la descarga")
+            }
+        }
+    }
+
+    private fun instalar() {
+        val apk = apkBajado ?: return buscarActualizacion()
+        if (!actualizador.puedeInstalar()) {
+            val abrio = actualizador.pedirPermiso()
+            _actualizacion.value = EstadoActualizacion.FaltaPermiso(abrio)
+            return
+        }
+        try {
+            actualizador.instalar(apk)
+        } catch (e: Exception) {
+            _actualizacion.value = EstadoActualizacion.Error("no se pudo abrir el instalador: ${e.message}")
+        }
+    }
+
     val favoritos: StateFlow<Set<String>> =
         prefs.favoritos.stateIn(viewModelScope, SharingStarted.Eagerly, emptySet())
 
     init {
+        buscarActualizacion(silencioso = true)
         viewModelScope.launch {
             val l = repo.cargar()
             _lista.value = l
@@ -66,4 +130,16 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
     fun alternarFavorito(canal: Canal) {
         viewModelScope.launch { prefs.alternarFavorito(canal.id) }
     }
+}
+
+sealed interface EstadoActualizacion {
+    data object Nada : EstadoActualizacion
+    data object Buscando : EstadoActualizacion
+    data object AlDia : EstadoActualizacion
+    data class Disponible(val version: Version) : EstadoActualizacion
+    data class Descargando(val build: Int, val porcentaje: Int) : EstadoActualizacion
+    data class ListoParaInstalar(val build: Int) : EstadoActualizacion
+    /** abrioAjustes = se abrió la pantalla del sistema; si no, hay que hacerlo a mano. */
+    data class FaltaPermiso(val abrioAjustes: Boolean) : EstadoActualizacion
+    data class Error(val motivo: String) : EstadoActualizacion
 }
