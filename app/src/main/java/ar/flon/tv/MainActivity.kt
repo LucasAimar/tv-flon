@@ -72,6 +72,7 @@ private fun App(vm: MainViewModel, onPantallaEncendida: (Boolean) -> Unit) {
     val categoria by vm.categoria.collectAsStateWithLifecycle()
     val ultimo by vm.ultimoCanal.collectAsStateWithLifecycle()
     val actualizacion by vm.actualizacion.collectAsStateWithLifecycle()
+    val ajustesYoutube by vm.ajustesYoutube.collectAsStateWithLifecycle()
     var menuAbierto by remember { mutableStateOf(false) }
     var menuUsado by remember { mutableStateOf(false) }
     val focoMenu = remember { FocusRequester() }
@@ -101,6 +102,7 @@ private fun App(vm: MainViewModel, onPantallaEncendida: (Boolean) -> Unit) {
                 onVolver = vm::cerrar,
                 vecinos = l.canales.filter { it.categoria == c.categoria },
                 onCambiar = vm::abrir,
+                ajustesYoutube = ajustesYoutube,
             )
             else -> PantallaInicio(
                 lista = l,
@@ -128,6 +130,8 @@ private fun App(vm: MainViewModel, onPantallaEncendida: (Boolean) -> Unit) {
                 onActualizar = vm::accionActualizacion,
                 totalCanales = l.canales.size,
                 listaVerificada = l.verificado,
+                ajustesYoutube = ajustesYoutube,
+                onAjustesYoutube = vm::cambiarAjustesYoutube,
             )
         }
     }

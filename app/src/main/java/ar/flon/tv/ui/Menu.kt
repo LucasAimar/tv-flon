@@ -38,6 +38,7 @@ import androidx.tv.material3.OutlinedButton
 import androidx.tv.material3.Text
 import ar.flon.tv.BuildConfig
 import ar.flon.tv.EstadoActualizacion
+import ar.flon.tv.data.AjustesYoutube
 import kotlinx.coroutines.delay
 
 /**
@@ -73,6 +74,8 @@ fun PanelMenu(
     onActualizar: () -> Unit,
     totalCanales: Int,
     listaVerificada: String?,
+    ajustesYoutube: AjustesYoutube,
+    onAjustesYoutube: (AjustesYoutube) -> Unit,
 ) {
     BackHandler(enabled = abierto, onBack = onCerrar)
 
@@ -121,6 +124,32 @@ fun PanelMenu(
                     else OutlinedButton(onClick = onActualizar, modifier = mod) { Text(texto) }
                     notaActualizacion(actualizacion)?.let {
                         Text(it, color = Color(0xFFB8C2D6), style = MaterialTheme.typography.bodySmall)
+                    }
+                }
+
+                Seccion("Reproducción de YouTube") {
+                    val enApp = ajustesYoutube.enAppOficial
+                    OutlinedButton(onClick = { onAjustesYoutube(ajustesYoutube.copy(enAppOficial = !enApp)) }) {
+                        Text(if (enApp) "Abrir en: app de YouTube" else "Abrir en: dentro de TV")
+                    }
+                    Text(
+                        if (enApp) "Mejor imagen. Sale de TV; con Atrás volvés. La fila de cambio no está disponible ahí."
+                        else "Se ve sin salir de TV, con la fila de cambio rápido. La calidad depende del aparato.",
+                        color = Color(0xFFB8C2D6),
+                        style = MaterialTheme.typography.bodySmall,
+                    )
+                    if (!enApp) {
+                        val es1080 = ajustesYoutube.calidadMaxima == "hd1080"
+                        OutlinedButton(onClick = {
+                            onAjustesYoutube(ajustesYoutube.copy(calidadMaxima = if (es1080) "hd720" else "hd1080"))
+                        }) {
+                            Text(if (es1080) "Calidad máxima: 1080p" else "Calidad máxima: 720p")
+                        }
+                        Text(
+                            "Si se corta o se traba, probá 720p.",
+                            color = Color(0xFFB8C2D6),
+                            style = MaterialTheme.typography.bodySmall,
+                        )
                     }
                 }
 

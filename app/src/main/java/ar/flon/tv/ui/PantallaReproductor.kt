@@ -27,6 +27,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.tv.material3.MaterialTheme
 import androidx.tv.material3.Text
+import ar.flon.tv.data.AjustesYoutube
 import ar.flon.tv.data.Canal
 import ar.flon.tv.data.TipoFuente
 import ar.flon.tv.ui.reproductores.AbrirAppYouTube
@@ -47,6 +48,7 @@ fun PantallaReproductor(
     /** Canales de la misma categoría, para la fila de cambio rápido. */
     vecinos: List<Canal> = emptyList(),
     onCambiar: (Canal) -> Unit = {},
+    ajustesYoutube: AjustesYoutube = AjustesYoutube(),
 ) {
     BackHandler(onBack = onVolver)
 
@@ -78,7 +80,9 @@ fun PantallaReproductor(
                 when (fuente.tipo) {
                     TipoFuente.HLS -> ReproductorExo(fuente, soloAudio = false, canal = canal, onError = fallo)
                     TipoFuente.AUDIO -> ReproductorExo(fuente, soloAudio = true, canal = canal, onError = fallo)
-                    TipoFuente.YOUTUBE -> ReproductorYouTube(fuente, onError = fallo)
+                    TipoFuente.YOUTUBE ->
+                        if (ajustesYoutube.enAppOficial) AbrirAppYouTube(fuente, onError = fallo)
+                        else ReproductorYouTube(fuente, calidadMaxima = ajustesYoutube.calidadMaxima, onError = fallo)
                     TipoFuente.WEB -> ReproductorWeb(fuente, onError = fallo)
                     TipoFuente.YOUTUBE_APP -> AbrirAppYouTube(fuente, onError = fallo)
                     else -> LaunchedEffect(Unit) { fallo("tipo desconocido") }

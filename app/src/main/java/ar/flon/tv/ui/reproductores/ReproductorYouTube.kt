@@ -51,7 +51,7 @@ import kotlinx.coroutines.delay
  */
 @SuppressLint("SetJavaScriptEnabled")
 @Composable
-fun ReproductorYouTube(fuente: Fuente, onError: (String) -> Unit) {
+fun ReproductorYouTube(fuente: Fuente, calidadMaxima: String = "hd1080", onError: (String) -> Unit) {
     val onErrorActual = rememberUpdatedState(onError)
     var diagnostico by remember { mutableStateOf("Cargando YouTube…") }
     var mostrarDiagnostico by remember { mutableStateOf(true) }
@@ -137,7 +137,7 @@ fun ReproductorYouTube(fuente: Fuente, onError: (String) -> Unit) {
                         }
 
                         override fun onPageFinished(view: WebView, url: String) {
-                            view.evaluateJavascript(JS_VIGILAR, null)
+                            view.evaluateJavascript(jsVigilar(calidadMaxima), null)
                         }
                     }
 
@@ -206,29 +206,53 @@ private suspend fun videoEnVivo(canalId: String): String? = withContext(Dispatch
  * Corre dentro del embed: cada 2 s revisa si hay error de YouTube, si el video avanza
  * y qué resolución tiene. Si a los 30 s no arrancó, avisa error para pasar a otra fuente.
  */
-private const val JS_VIGILAR = """
+/**
+ * Corre dentro del embed cada 2 s:
+ * - error de YouTube → fuente siguiente;
+ * - pide la mejor calidad disponible hasta `calidadMaxima` (el reproductor embebido,
+ *   por el tamaño en pantalla del TV, tiende a quedarse en 480p/720p);
+ * - informa resolución y calidad en el cartel de diagnóstico.
+ */
+private fun jsVigilar(calidadMaxima: String) = """
 (function(){
   if (window.__vigilando) return; window.__vigilando = true;
-  var inicio = Date.now(), arranco = false;
+  var inicio = Date.now(), arranco = false, ultimoAjuste = 0;
+  var orden = ['hd1080','hd720','large','medium','small'];
+  var desde = Math.max(0, orden.indexOf('$calidadMaxima'));
   function visible(el){
     if (!el) return false;
     var cs = getComputedStyle(el), r = el.getBoundingClientRect();
     return cs.display !== 'none' && cs.visibility !== 'hidden' && r.width > 0 && r.height > 0;
   }
-  // Revisa todo el tiempo (un vivo puede caerse después de arrancar).
+  function ajustarCalidad(){
+    var p = document.getElementById('movie_player');
+    if (!p || !p.getAvailableQualityLevels) return '';
+    var hay = p.getAvailableQualityLevels() || [];
+    var objetivo = null;
+    for (var i = desde; i < orden.length; i++) if (hay.indexOf(orden[i]) >= 0) { objetivo = orden[i]; break; }
+    var actual = p.getPlaybackQuality ? p.getPlaybackQuality() : '';
+    if (objetivo && actual !== objetivo && Date.now() - ultimoAjuste > 10000) {
+      ultimoAjuste = Date.now();
+      try { p.setPlaybackQualityRange && p.setPlaybackQualityRange(objetivo, objetivo); } catch(e){}
+      try { p.setPlaybackQuality && p.setPlaybackQuality(objetivo); } catch(e){}
+    }
+    return actual;
+  }
   setInterval(function(){
     var err = document.querySelector('.ytp-error');
     var texto = (err && err.innerText || '').trim();
     if (visible(err) || /no est\u00e1 disponible|unavailable|no disponible/i.test(texto)) {
       Android.error((texto || 'video no disponible').split('\n')[0].slice(0,80)); return;
     }
+    var calidad = ajustarCalidad();
     var v = document.querySelector('video');
     if (v) {
       if (v.paused && !arranco) { try { v.play(); } catch(e){} }
       if (v.currentTime > 0) arranco = true;
-      if (Date.now() - inicio < 20000) {
+      if (Date.now() - inicio < 25000) {
         Android.estado('Video ' + v.videoWidth + 'x' + v.videoHeight +
-                       (window.__h264 ? ' · H.264' : ' · códec libre') +
+                       (calidad ? ' · ' + calidad : '') +
+                       (window.__h264 ? ' · H.264' : '') +
                        (arranco ? ' · reproduciendo' : ' · cargando'));
       }
       if (arranco && v.videoWidth === 0 && v.currentTime > 15) { Android.error('solo audio, sin video'); return; }

@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import ar.flon.tv.data.Actualizador
+import ar.flon.tv.data.AjustesYoutube
 import ar.flon.tv.data.Canal
 import ar.flon.tv.data.Version
 import java.io.File
@@ -95,6 +96,13 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
         } catch (e: Exception) {
             _actualizacion.value = EstadoActualizacion.Error("no se pudo abrir el instalador: ${e.message}")
         }
+    }
+
+    val ajustesYoutube: StateFlow<AjustesYoutube> =
+        prefs.ajustesYoutube.stateIn(viewModelScope, SharingStarted.Eagerly, AjustesYoutube())
+
+    fun cambiarAjustesYoutube(a: AjustesYoutube) {
+        viewModelScope.launch { prefs.guardarAjustesYoutube(a) }
     }
 
     val favoritos: StateFlow<Set<String>> =
