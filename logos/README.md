@@ -54,15 +54,7 @@ con el nombre correcto reemplaza al logo que haya, sin tocar el JSON ni recompil
 | `radiocanal4.png` | Radiocanal Canal 4 (San Francisco) |
 | `3564.png` | 3564 Stream TV |
 | `tyc.png` | TyC Sports |
-| `plutodeportes.png` | Pluto TV Deportes |
-| `plutofutbol.png` | Pluto TV Fútbol |
-| `clarosports.png` | Claro Sports FAST |
-| `fifaplus.png` | FIFA+ |
-| `redbulltv.png` | Red Bull TV |
-| `gourmetplato.png` | elGourmet: Plato del Día |
-| `gourmetdulce.png` | elGourmet: Dulce |
-| `tastemade.png` | Tastemade Food |
-| `masterchefar.png` | MasterChef Argentina |
+| `elgourmet.png` | El Gourmet |
 | `argentinisima.png` | Argentinísima Satelital |
 | `telemax.png` | Telemax |
 | `cadena3.png` | Cadena 3 |

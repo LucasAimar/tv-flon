@@ -7,7 +7,6 @@
     "Streaming",
     "Córdoba",
     "Deportes",
-    "Cocina",
     "Otros",
     "Radios"
   ],
@@ -515,144 +514,18 @@
       ]
     },
     {
-      "id": "plutodeportes",
-      "nombre": "Pluto TV Deportes",
-      "categoria": "Deportes",
-      "logo": "https://images.pluto.tv/channels/5dcde07af1c85b0009b18651/colorLogoPNG_1766080575034.png",
-      "notas": "Pluto TV (gratis, con publicidad)",
+      "id": "elgourmet",
+      "nombre": "El Gourmet",
+      "categoria": "Otros",
+      "logo": "https://i.imgur.com/XXXXXXXX.png",
       "fuentes": [
         {
           "tipo": "hls",
-          "url": "https://cfd-v4-service-channel-stitcher-use1-1.prd.pluto.tv/stitch/hls/channel/5dcde07af1c85b0009b18651/master.m3u8?advertisingId=&appName=tv-flon&appVersion=1&architecture=&buildVersion=&clientTime=&deviceDNT=0&deviceId={dispositivo}&deviceMake=android&deviceModel=androidtv&deviceType=androidtv&deviceVersion=unknown&includeExtendedEvents=false&sid={sesion}&userId=",
-          "prioridad": 1
-        }
-      ]
-    },
-    {
-      "id": "plutofutbol",
-      "nombre": "Pluto TV Fútbol",
-      "categoria": "Deportes",
-      "logo": "https://images.pluto.tv/channels/63c6e37e636b7e0007ccb635/colorLogoPNG_1777492822828.png",
-      "notas": "Pluto TV (gratis, con publicidad)",
-      "fuentes": [
-        {
-          "tipo": "hls",
-          "url": "https://cfd-v4-service-channel-stitcher-use1-1.prd.pluto.tv/stitch/hls/channel/63c6e37e636b7e0007ccb635/master.m3u8?advertisingId=&appName=tv-flon&appVersion=1&architecture=&buildVersion=&clientTime=&deviceDNT=0&deviceId={dispositivo}&deviceMake=android&deviceModel=androidtv&deviceType=androidtv&deviceVersion=unknown&includeExtendedEvents=false&sid={sesion}&userId=",
-          "prioridad": 1
-        }
-      ]
-    },
-    {
-      "id": "clarosports",
-      "nombre": "Claro Sports FAST",
-      "categoria": "Deportes",
-      "logo": "https://images.pluto.tv/channels/6320d2755e54db000783fd87/colorLogoPNG_1791496367503.png",
-      "notas": "Pluto TV (gratis, con publicidad)",
-      "fuentes": [
-        {
-          "tipo": "hls",
-          "url": "https://cfd-v4-service-channel-stitcher-use1-1.prd.pluto.tv/stitch/hls/channel/6320d2755e54db000783fd87/master.m3u8?advertisingId=&appName=tv-flon&appVersion=1&architecture=&buildVersion=&clientTime=&deviceDNT=0&deviceId={dispositivo}&deviceMake=android&deviceModel=androidtv&deviceType=androidtv&deviceVersion=unknown&includeExtendedEvents=false&sid={sesion}&userId=",
-          "prioridad": 1
-        }
-      ]
-    },
-    {
-      "id": "fifaplus",
-      "nombre": "FIFA+",
-      "categoria": "Deportes",
-      "logo": "https://images.pluto.tv/channels/66997d18a1b69e00082ee85f/colorLogoPNG_1749841168303.png",
-      "notas": "Pluto TV (gratis, con publicidad)",
-      "fuentes": [
-        {
-          "tipo": "hls",
-          "url": "https://cfd-v4-service-channel-stitcher-use1-1.prd.pluto.tv/stitch/hls/channel/66997d18a1b69e00082ee85f/master.m3u8?advertisingId=&appName=tv-flon&appVersion=1&architecture=&buildVersion=&clientTime=&deviceDNT=0&deviceId={dispositivo}&deviceMake=android&deviceModel=androidtv&deviceType=androidtv&deviceVersion=unknown&includeExtendedEvents=false&sid={sesion}&userId=",
-          "prioridad": 1
-        }
-      ]
-    },
-    {
-      "id": "redbulltv",
-      "nombre": "Red Bull TV",
-      "categoria": "Deportes",
-      "logo": "https://images.pluto.tv/channels/67813f893886aa863497733d/colorLogoPNG.png",
-      "notas": "Pluto TV (gratis, con publicidad)",
-      "fuentes": [
-        {
-          "tipo": "hls",
-          "url": "https://cfd-v4-service-channel-stitcher-use1-1.prd.pluto.tv/stitch/hls/channel/67813f893886aa863497733d/master.m3u8?advertisingId=&appName=tv-flon&appVersion=1&architecture=&buildVersion=&clientTime=&deviceDNT=0&deviceId={dispositivo}&deviceMake=android&deviceModel=androidtv&deviceType=androidtv&deviceVersion=unknown&includeExtendedEvents=false&sid={sesion}&userId=",
-          "prioridad": 1
-        }
-      ]
-    },
-	{
-	  "id": "elgourmet",
-	  "nombre": "El Gourmet",
-	  "categoria": "Cocina",
-	  "logo": "https://i.imgur.com/XXXXXXXX.png",
-	  "fuentes": [
-		{
-		  "tipo": "hls",
-		  "url": "https://iptv.bitred.cl/ELGOURMET_HD/tracks-v1a1/mono.ts.m3u8",
-		  "headers": {
-			"Referer": "https://freetv.studio/",
-			"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
-		  },
-		  "prioridad": 1
-		}
-	  ]
-	},
-    {
-      "id": "gourmetplato",
-      "nombre": "elGourmet: Plato del Día",
-      "categoria": "Cocina",
-      "logo": "https://images.pluto.tv/channels/6894febddbd49c964f3b66c8/colorLogoPNG_1756396393218.png",
-      "notas": "Pluto TV (gratis, con publicidad)",
-      "fuentes": [
-        {
-          "tipo": "hls",
-          "url": "https://cfd-v4-service-channel-stitcher-use1-1.prd.pluto.tv/stitch/hls/channel/6894febddbd49c964f3b66c8/master.m3u8?advertisingId=&appName=tv-flon&appVersion=1&architecture=&buildVersion=&clientTime=&deviceDNT=0&deviceId={dispositivo}&deviceMake=android&deviceModel=androidtv&deviceType=androidtv&deviceVersion=unknown&includeExtendedEvents=false&sid={sesion}&userId=",
-          "prioridad": 1
-        }
-      ]
-    },
-    {
-      "id": "gourmetdulce",
-      "nombre": "elGourmet: Dulce",
-      "categoria": "Cocina",
-      "logo": "https://images.pluto.tv/channels/6894fc3f66f164e402f4fd14/colorLogoPNG_1756447016242.png",
-      "notas": "Pluto TV (gratis, con publicidad)",
-      "fuentes": [
-        {
-          "tipo": "hls",
-          "url": "https://cfd-v4-service-channel-stitcher-use1-1.prd.pluto.tv/stitch/hls/channel/6894fc3f66f164e402f4fd14/master.m3u8?advertisingId=&appName=tv-flon&appVersion=1&architecture=&buildVersion=&clientTime=&deviceDNT=0&deviceId={dispositivo}&deviceMake=android&deviceModel=androidtv&deviceType=androidtv&deviceVersion=unknown&includeExtendedEvents=false&sid={sesion}&userId=",
-          "prioridad": 1
-        }
-      ]
-    },
-    {
-      "id": "tastemade",
-      "nombre": "Tastemade Food",
-      "categoria": "Cocina",
-      "logo": "https://images.pluto.tv/channels/5f998c1fc54853000797bacd/colorLogoPNG_1793802456063.png",
-      "notas": "Pluto TV (gratis, con publicidad)",
-      "fuentes": [
-        {
-          "tipo": "hls",
-          "url": "https://cfd-v4-service-channel-stitcher-use1-1.prd.pluto.tv/stitch/hls/channel/5f998c1fc54853000797bacd/master.m3u8?advertisingId=&appName=tv-flon&appVersion=1&architecture=&buildVersion=&clientTime=&deviceDNT=0&deviceId={dispositivo}&deviceMake=android&deviceModel=androidtv&deviceType=androidtv&deviceVersion=unknown&includeExtendedEvents=false&sid={sesion}&userId=",
-          "prioridad": 1
-        }
-      ]
-    },
-    {
-      "id": "masterchefar",
-      "nombre": "MasterChef Argentina",
-      "categoria": "Cocina",
-      "logo": "https://images.pluto.tv/channels/69fcaa88e022927e1c94c533/colorLogoPNG_1779731088552.png",
-      "notas": "Pluto TV (gratis, con publicidad)",
-      "fuentes": [
-        {
-          "tipo": "hls",
-          "url": "https://cfd-v4-service-channel-stitcher-use1-1.prd.pluto.tv/stitch/hls/channel/69fcaa88e022927e1c94c533/master.m3u8?advertisingId=&appName=tv-flon&appVersion=1&architecture=&buildVersion=&clientTime=&deviceDNT=0&deviceId={dispositivo}&deviceMake=android&deviceModel=androidtv&deviceType=androidtv&deviceVersion=unknown&includeExtendedEvents=false&sid={sesion}&userId=",
+          "url": "https://iptv.bitred.cl/ELGOURMET_HD/tracks-v1a1/mono.ts.m3u8",
+          "headers": {
+            "Referer": "https://freetv.studio/",
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+          },
           "prioridad": 1
         }
       ]
