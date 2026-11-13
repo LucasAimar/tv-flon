@@ -434,19 +434,6 @@
       ]
     },
     {
-      "id": "canal4vd",
-      "nombre": "Canal 4 Villa Dolores",
-      "categoria": "Córdoba",
-      "logo": "https://i.imgur.com/ZKSnGfw.png",
-      "fuentes": [
-        {
-          "tipo": "hls",
-          "url": "https://stmvideo3.livecastv.com/canal4vd/canal4vd/playlist.m3u8",
-          "prioridad": 1
-        }
-      ]
-    },
-    {
       "id": "canal50",
       "nombre": "Canal 50 Morteros",
       "categoria": "Córdoba",
@@ -494,6 +481,23 @@
         }
       ]
     },
+	{
+	  "id": "dsports",
+	  "nombre": "DSports",
+	  "categoria": "Deporte",
+	  "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8a/DSports.svg/512px-DSports.svg.png",
+	  "fuentes": [
+		{
+		  "tipo": "dash",
+		  "url": "https://a49live-pv-ta-amazon.akamaized.net/pdx-nitro/live/clients/dash/enc/my5zrwcz67/out/v1/f5e6298f64c34c62a4f69e6667cc23af/manifest.mpd",
+		  "headers": {
+			"Referer": "https://freetv.studio/",
+			"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+		  },
+		  "prioridad": 1
+		}
+	  ]
+	},
     {
       "id": "tyc",
       "nombre": "TyC Sports",
