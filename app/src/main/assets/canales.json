@@ -86,8 +86,12 @@
         {
           "tipo": "hls",
           "url": "https://dai.google.com/linear/hls/event/OY2i_lL4SMyXE5Zaj4ULEg/master.m3u8",
+          "headers": {
+            "Referer": "https://vmf.edge-apps.net/",
+            "Origin": "https://vmf.edge-apps.net"
+          },
           "prioridad": 1,
-          "notas": "Stream oficial de América (Google DAI, publicidad incluida), el mismo que usa el reproductor de americatv.com.ar/vivo. H.264 hasta 720p."
+          "notas": "Stream oficial de América (Google DAI, publicidad incluida), el mismo que usa el reproductor de americatv.com.ar/vivo. H.264 Main hasta 720p. Los segmentos (prepublish.f.qaotic.net) dan 403 sin el Referer del reproductor oficial (vmf.edge-apps.net)."
         },
         {
           "tipo": "web",
