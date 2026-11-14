@@ -527,14 +527,10 @@
 	  "logo": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/42/DSports.svg/960px-DSports.svg.png",
 	  "fuentes": [
 		{
-		  "tipo": "web",
-		  "url": "https://streamtp99a.sbs/global1.php?stream=dsports",
-		  "headers": {
-			"Referer": "https://pelotalibre.cx/"
-		  },
-		  "selector": "body",
+		  "tipo": "hls",
+		  "url": "https://93.domhsd.com/dsports/mono.m3u8?token=8470cf1dc9286b7634b21c92e49c03093556fc92-59-1794698276-1794680276",
 		  "prioridad": 1,
-		  "notas": "Reproductor embebido mediante iframe externo"
+		  "notas": "Stream HLS directo extraído manualmente"
 		}
 	  ]
 	},
